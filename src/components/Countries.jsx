@@ -226,56 +226,67 @@ function Countries() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h2 className="text-4xl font-bold text-orange-900 mb-8 text-center">Explore Countries</h2>
-      
-      <div className="max-w-4xl mx-auto mb-12"> {/* Changed from max-w-md and increased margin bottom */}
-        <div className="relative">
-          <input
-            type="text"
-            placeholder="Search countries..."
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full px-6 py-4 text-lg border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-500 focus:outline-none shadow-lg" /* Updated padding, text size, border, and added shadow */
-          />
-          <svg
-            className="absolute right-6 top-5 h-6 w-6 text-gray-400" /* Adjusted position and size of icon */
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+      <div className="relative mb-16 text-center">
+        <h2 className="text-6xl font-bold text-orange-900 mb-4">Explore Countries</h2>
+        <p className="text-xl text-gray-600 mb-8">Discover amazing destinations around the world</p>
+        
+        <div className="max-w-4xl mx-auto">
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search your dream destination..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full px-8 py-6 text-xl border-2 border-gray-300 rounded-2xl focus:ring-4 focus:ring-orange-200 focus:border-orange-500 focus:outline-none shadow-xl transition-all duration-300"
             />
-          </svg>
+            <svg
+              className="absolute right-8 top-7 h-8 w-8 text-orange-500"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
+          </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {isLoading ? (
-          // Show skeleton loading while images are loading
           Array(9).fill(0).map((_, index) => <SkeletonCard key={index} />)
         ) : (
           filteredCountries.map(country => (
-            <div key={country.id} className="bg-white rounded-xl shadow-lg overflow-hidden">
-              <img 
-                src={country.image} 
-                alt={country.name} 
-                className="w-full h-48 object-cover"
-                loading="lazy"
-                decoding="async"
-              />
-              <div className="p-6">
-                <h3 className="text-2xl font-bold text-orange-900 mb-2">{country.name}</h3>
-                <p className="text-gray-600 mb-2">Capital: {country.capital}</p>
-                <p className="text-gray-700 mb-4">{country.description}</p>
-                <div className="space-y-2">
-                  <h4 className="font-semibold text-orange-800">Top Attractions:</h4>
-                  <ul className="list-disc list-inside text-gray-700">
+            <div key={country.id} className="group bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl">
+              <div className="relative h-64 overflow-hidden">
+                <img 
+                  src={country.image} 
+                  alt={country.name} 
+                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                  loading="lazy"
+                  decoding="async"
+                />
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 group-hover:opacity-70 transition-opacity duration-300"/>
+                <h3 className="absolute bottom-4 left-6 text-3xl font-bold text-white">{country.name}</h3>
+              </div>
+              <div className="p-8">
+                <div className="flex items-center mb-4">
+                  <span className="text-lg font-semibold text-orange-900">Capital:</span>
+                  <span className="ml-2 text-gray-600">{country.capital}</span>
+                </div>
+                <p className="text-gray-700 mb-6 leading-relaxed">{country.description}</p>
+                <div>
+                  <h4 className="font-semibold text-orange-900 mb-3">Top Attractions:</h4>
+                  <ul className="space-y-2">
                     {country.attractions.map((attraction, index) => (
-                      <li key={index}>{attraction}</li>
+                      <li key={index} className="flex items-center text-gray-700">
+                        <span className="text-orange-500 mr-2">✦</span>
+                        {attraction}
+                      </li>
                     ))}
                   </ul>
                 </div>
