@@ -30,6 +30,13 @@ export default {
       },
       backdropBlur: {
         'xs': '2px',
+      },
+      transitionProperty: {
+        'height': 'height',
+        'spacing': 'margin, padding',
+      },
+      scale: {
+        '102': '1.02',
       }
     },
   },

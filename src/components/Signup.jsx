@@ -75,14 +75,21 @@ function Signup({ setUsername }) {
     const isPasswordValid = validatePassword(formData.password);
     
     if (formData.username && isEmailValid && isPasswordValid && formData.location) {
+      // Save all form data to localStorage
+      Object.entries(formData).forEach(([key, value]) => {
+        localStorage.setItem(key, value);
+      });
+      localStorage.setItem('joinDate', new Date().toLocaleDateString());
+      
       setShowPopup(true);
       setUsername(formData.username);
       
       setTimeout(() => {
         setShowPopup(false);
+        setShowPopup(false);
         setTimeout(() => {
           window.scrollTo(0, 0);
-          navigate('/');
+          navigate('/dashboard'); // Navigate to dashboard instead of home
         }, 100);
       }, 2000);
     }

@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 function Countries() {
   const [searchTerm, setSearchTerm] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState(null);
   const countries = [
     {
       id: 1,
@@ -174,10 +175,9 @@ function Countries() {
     }
   ];
 
-  useEffect(() => {
-    // Simulate loading and preload images
-    const preloadImages = async () => {
-      setIsLoading(true);
+  const preloadImages = useCallback(async () => {
+    setIsLoading(true);
+    try {
       const imagePromises = countries.map(country => {
         return new Promise((resolve, reject) => {
           const img = new Image();
@@ -187,21 +187,21 @@ function Countries() {
         });
       });
       
-      try {
-        await Promise.all(imagePromises);
-      } catch (error) {
-        console.error('Error preloading images:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    preloadImages();
+      await Promise.all(imagePromises);
+    } catch (error) {
+      setError('Failed to load images');
+      console.error('Error preloading images:', error);
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    preloadImages();
+  }, [preloadImages]);
+
   const filteredCountries = countries.filter(country => 
-    country.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    country.capital.toLowerCase().includes(searchTerm.toLowerCase())
+    country.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   // Skeleton loading component
@@ -234,7 +234,7 @@ function Countries() {
           <div className="relative">
             <input
               type="text"
-              placeholder="Search your dream destination..."
+              placeholder="Search country name..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="w-full px-8 py-6 text-xl border-2 border-gray-300 rounded-2xl focus:ring-4 focus:ring-orange-200 focus:border-orange-500 focus:outline-none shadow-xl transition-all duration-300"
@@ -256,45 +256,51 @@ function Countries() {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-        {isLoading ? (
-          Array(9).fill(0).map((_, index) => <SkeletonCard key={index} />)
-        ) : (
-          filteredCountries.map(country => (
-            <div key={country.id} className="group bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl">
-              <div className="relative h-64 overflow-hidden">
-                <img 
-                  src={country.image} 
-                  alt={country.name} 
-                  className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                  loading="lazy"
-                  decoding="async"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 group-hover:opacity-70 transition-opacity duration-300"/>
-                <h3 className="absolute bottom-4 left-6 text-3xl font-bold text-white">{country.name}</h3>
-              </div>
-              <div className="p-8">
-                <div className="flex items-center mb-4">
-                  <span className="text-lg font-semibold text-orange-900">Capital:</span>
-                  <span className="ml-2 text-gray-600">{country.capital}</span>
+      {filteredCountries.length === 0 ? (
+        <div className="text-center py-12">
+          <p className="text-xl text-gray-600">No countries found matching "{searchTerm}"</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+          {isLoading ? (
+            Array(9).fill(0).map((_, index) => <SkeletonCard key={index} />)
+          ) : (
+            filteredCountries.map(country => (
+              <div key={country.id} className="group bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl">
+                <div className="relative h-64 overflow-hidden">
+                  <img 
+                    src={country.image} 
+                    alt={country.name} 
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 group-hover:opacity-70 transition-opacity duration-300"/>
+                  <h3 className="absolute bottom-4 left-6 text-3xl font-bold text-white">{country.name}</h3>
                 </div>
-                <p className="text-gray-700 mb-6 leading-relaxed">{country.description}</p>
-                <div>
-                  <h4 className="font-semibold text-orange-900 mb-3">Top Attractions:</h4>
-                  <ul className="space-y-2">
-                    {country.attractions.map((attraction, index) => (
-                      <li key={index} className="flex items-center text-gray-700">
-                        <span className="text-orange-500 mr-2">✦</span>
-                        {attraction}
-                      </li>
-                    ))}
-                  </ul>
+                <div className="p-8">
+                  <div className="flex items-center mb-4">
+                    <span className="text-lg font-semibold text-orange-900">Capital:</span>
+                    <span className="ml-2 text-gray-600">{country.capital}</span>
+                  </div>
+                  <p className="text-gray-700 mb-6 leading-relaxed">{country.description}</p>
+                  <div>
+                    <h4 className="font-semibold text-orange-900 mb-3">Top Attractions:</h4>
+                    <ul className="space-y-2">
+                      {country.attractions.map((attraction, index) => (
+                        <li key={index} className="flex items-center text-gray-700">
+                          <span className="text-orange-500 mr-2">✦</span>
+                          {attraction}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
                 </div>
               </div>
-            </div>
-          ))
-        )}
-      </div>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }
