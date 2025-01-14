@@ -1,9 +1,53 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+
+const LoadingScreen = () => (
+  <div className="fixed inset-0 bg-white z-50 flex items-center justify-center">
+    <div className="text-center">
+      <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-b-4 border-orange-500 mb-4"></div>
+      <p className="text-xl text-gray-600">Loading amazing destinations...</p>
+    </div>
+  </div>
+);
+
+const CountryCard = React.memo(({ country, onClick }) => (
+  <div 
+    className="group bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl cursor-pointer"
+    onClick={() => onClick(country.name)}
+  >
+    <div className="relative h-64 overflow-hidden">
+      <img 
+        src={country.image} 
+        alt={country.name} 
+        className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 group-hover:opacity-70 transition-opacity duration-300" />
+      <h3 className="absolute bottom-4 left-6 text-3xl font-bold text-white">{country.name}</h3>
+    </div>
+    <div className="p-8">
+      <div className="flex items-center mb-4">
+        <span className="text-lg font-semibold text-orange-900">Capital:</span>
+        <span className="ml-2 text-gray-600">{country.capital}</span>
+      </div>
+      <p className="text-gray-700 mb-6 leading-relaxed">{country.description}</p>
+      <div>
+        <h4 className="font-semibold text-orange-900 mb-3">Top Attractions:</h4>
+        <ul className="space-y-2">
+          {country.attractions.map((attraction, index) => (
+            <li key={index} className="flex items-center text-gray-700">
+              <span className="text-orange-500 mr-2">✦</span>
+              {attraction}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+));
 
 function Countries() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
   const countries = [
     {
       id: 1,
@@ -175,54 +219,23 @@ function Countries() {
     }
   ];
 
-  const preloadImages = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const imagePromises = countries.map(country => {
-        return new Promise((resolve, reject) => {
-          const img = new Image();
-          img.src = country.image;
-          img.onload = resolve;
-          img.onerror = reject;
-        });
-      });
-      
-      await Promise.all(imagePromises);
-    } catch (error) {
-      setError('Failed to load images');
-      console.error('Error preloading images:', error);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    preloadImages();
-  }, [preloadImages]);
-
-  const filteredCountries = countries.filter(country => 
-    country.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredCountries = useMemo(() => 
+    countries.filter(country => 
+      country.name.toLowerCase().includes(searchTerm.toLowerCase())
+    ),
+    [searchTerm]
   );
 
-  // Skeleton loading component
-  const SkeletonCard = () => (
-    <div className="bg-white rounded-xl shadow-lg overflow-hidden animate-pulse">
-      <div className="w-full h-48 bg-gray-200"/>
-      <div className="p-6">
-        <div className="h-6 bg-gray-200 rounded w-3/4 mb-2"/>
-        <div className="h-4 bg-gray-200 rounded w-1/2 mb-4"/>
-        <div className="h-4 bg-gray-200 rounded w-full mb-4"/>
-        <div className="space-y-2">
-          <div className="h-4 bg-gray-200 rounded w-1/3"/>
-          <div className="space-y-2">
-            {[1, 2, 3].map((_, i) => (
-              <div key={i} className="h-3 bg-gray-200 rounded w-3/4"/>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
+  const handleCountryClick = useCallback((countryName) => {
+    const countryRoutes = {
+      'Japan': '/country/japan',
+      'India': '/country/india',
+      'France': '/country/france',
+    };
+
+    const route = countryRoutes[countryName] || `/country/${countryName.toLowerCase()}`;
+    navigate(route);
+  }, [navigate]);
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -256,53 +269,25 @@ function Countries() {
         </div>
       </div>
 
-      {filteredCountries.length === 0 ? (
-        <div className="text-center py-12">
-          <p className="text-xl text-gray-600">No countries found matching "{searchTerm}"</p>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-          {isLoading ? (
-            Array(9).fill(0).map((_, index) => <SkeletonCard key={index} />)
-          ) : (
-            filteredCountries.map(country => (
-              <div key={country.id} className="group bg-white rounded-2xl shadow-xl overflow-hidden transform hover:-translate-y-2 transition-all duration-300 hover:shadow-2xl">
-                <div className="relative h-64 overflow-hidden">
-                  <img 
-                    src={country.image} 
-                    alt={country.name} 
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
-                    loading="lazy"
-                    decoding="async"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black opacity-60 group-hover:opacity-70 transition-opacity duration-300"/>
-                  <h3 className="absolute bottom-4 left-6 text-3xl font-bold text-white">{country.name}</h3>
-                </div>
-                <div className="p-8">
-                  <div className="flex items-center mb-4">
-                    <span className="text-lg font-semibold text-orange-900">Capital:</span>
-                    <span className="ml-2 text-gray-600">{country.capital}</span>
-                  </div>
-                  <p className="text-gray-700 mb-6 leading-relaxed">{country.description}</p>
-                  <div>
-                    <h4 className="font-semibold text-orange-900 mb-3">Top Attractions:</h4>
-                    <ul className="space-y-2">
-                      {country.attractions.map((attraction, index) => (
-                        <li key={index} className="flex items-center text-gray-700">
-                          <span className="text-orange-500 mr-2">✦</span>
-                          {attraction}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
-        </div>
-      )}
+      <div>
+        {filteredCountries.length === 0 ? (
+          <div className="text-center py-12">
+            <p className="text-xl text-gray-600">No countries found matching "{searchTerm}"</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {filteredCountries.map((country) => (
+              <CountryCard 
+                key={country.id}
+                country={country}
+                onClick={handleCountryClick}
+              />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
 
-export default Countries;
+export default React.memo(Countries);

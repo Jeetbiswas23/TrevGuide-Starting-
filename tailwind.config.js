@@ -22,11 +22,21 @@ export default {
         wiggle: {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
-        }
+        },
+        fadeIn: {
+          '0%': { opacity: '0', transform: 'translateY(20px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+        'flag-wave': {
+          '0%, 100%': { transform: 'rotate(-1deg)' },
+          '50%': { transform: 'rotate(1deg)' },
+        },
       },
       animation: {
         'dropdownFade': 'dropdownFade 0.3s ease-out forwards',
         'wiggle': 'wiggle 0.3s ease-in-out',
+        'fade-in': 'fadeIn 1s ease-out',
+        'flag-wave': 'flag-wave 2s ease-in-out infinite',
       },
       backdropBlur: {
         'xs': '2px',
@@ -37,7 +47,11 @@ export default {
       },
       scale: {
         '102': '1.02',
-      }
+      },
+      backdropFilter: {
+        'none': 'none',
+        'blur': 'blur(20px)',
+      },
     },
   },
   plugins: [],

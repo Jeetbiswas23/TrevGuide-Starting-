@@ -5,6 +5,9 @@ import Countries from './components/Countries';
 import Dashboard from './components/Dashboard';
 import './index.css';
 import { popularPlaces, testimonials, travelTips } from './data/siteData';
+import India from './components/Country/India';
+import Japan from './components/Country/Japan';
+import France from './components/Country/France';
 
 function ScrollToTop() {
   const location = useLocation();
@@ -280,6 +283,9 @@ function App() {
               )
             } 
           />
+          <Route path="/country/india" element={<India />} />
+          <Route path="/country/japan" element={<Japan />} />
+          <Route path="/country/france" element={<France />} />
         </Routes>
       </main>
 
