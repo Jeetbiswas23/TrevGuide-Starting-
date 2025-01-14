@@ -202,7 +202,7 @@ function France() {
               description: "World-renowned museums and monuments"
             },
             {
-              image: "https://images.unsplash.com/photo-1595534005229-68f1c7263713",
+              image: "https://images.unsplash.com/photo-1482275548304-a58859dc31b7?q=80&w=2787&auto=format&fit=crop", // New Culinary Excellence image
               title: "Culinary Excellence",
               description: "Birthplace of haute cuisine"
             },
@@ -222,7 +222,7 @@ function France() {
           {
             name: "Eiffel Tower",
             location: "Paris",
-            image: "https://images.unsplash.com/photo-1543349689-9a4d426bee8e",
+            image: "https://images.unsplash.com/photo-1431274172761-fca41d930114?q=80&w=2070&auto=format&fit=crop", // Updated more reliable Eiffel Tower image
             description: "Iconic symbol of France",
             tags: ["Landmark", "Architecture", "Views"]
           },
