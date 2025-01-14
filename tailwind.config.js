@@ -31,12 +31,22 @@ export default {
           '0%, 100%': { transform: 'rotate(-1deg)' },
           '50%': { transform: 'rotate(1deg)' },
         },
+        mobileMenuIn: {
+          '0%': { transform: 'translateX(100%)' },
+          '100%': { transform: 'translateX(0)' }
+        },
+        mobileMenuOut: {
+          '0%': { transform: 'translateX(0)' },
+          '100%': { transform: 'translateX(100%)' }
+        }
       },
       animation: {
         'dropdownFade': 'dropdownFade 0.3s ease-out forwards',
         'wiggle': 'wiggle 0.3s ease-in-out',
         'fade-in': 'fadeIn 1s ease-out',
         'flag-wave': 'flag-wave 2s ease-in-out infinite',
+        'mobile-menu-in': 'mobileMenuIn 0.3s ease-out',
+        'mobile-menu-out': 'mobileMenuOut 0.3s ease-in'
       },
       backdropBlur: {
         'xs': '2px',
@@ -44,6 +54,7 @@ export default {
       transitionProperty: {
         'height': 'height',
         'spacing': 'margin, padding',
+        'menu': 'transform, opacity, visibility',
       },
       scale: {
         '102': '1.02',
@@ -51,6 +62,12 @@ export default {
       backdropFilter: {
         'none': 'none',
         'blur': 'blur(20px)',
+      },
+      screens: {
+        'xs': '475px',
+      },
+      transitionTimingFunction: {
+        'menu': 'cubic-bezier(0.4, 0, 0.2, 1)',
       },
     },
   },
