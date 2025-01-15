@@ -150,6 +150,7 @@ function App() {
   const navigate = useNavigate();
   const [installPrompt, setInstallPrompt] = useState(null);
   const [isInstallable, setIsInstallable] = useState(false);
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
@@ -164,12 +165,34 @@ function App() {
     });
   }, []);
 
+  useEffect(() => {
+    const handler = (e) => {
+      // Prevent Chrome 67 and earlier from automatically showing the prompt
+      e.preventDefault();
+      // Stash the event so it can be triggered later
+      setDeferredPrompt(e);
+      console.log('beforeinstallprompt fired');
+    };
+
+    window.addEventListener('beforeinstallprompt', handler);
+    return () => window.removeEventListener('beforeinstallprompt', handler);
+  }, []);
+
   const handleInstallClick = async () => {
-    if (!installPrompt) return;
-    installPrompt.prompt();
-    const { outcome } = await installPrompt.userChoice;
+    if (!deferredPrompt) {
+      console.log('No install prompt available');
+      return;
+    }
+
+    // Show the install prompt
+    deferredPrompt.prompt();
+
+    // Wait for the user to respond to the prompt
+    const { outcome } = await deferredPrompt.userChoice;
     console.log(`User response to the install prompt: ${outcome}`);
-    setInstallPrompt(null);
+
+    // We've used the prompt, and can't use it again, clear it
+    setDeferredPrompt(null);
   };
 
   // Close mobile menu when clicking outside
@@ -528,6 +551,17 @@ function App() {
         </div>
       </footer>
       {isInstallable && (
+        <button
+          onClick={handleInstallClick}
+          className="fixed bottom-4 right-4 bg-orange-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 flex items-center space-x-2 hover:bg-orange-800 transition-all transform hover:scale-105"
+        >
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span>Install App</span>
+        </button>
+      )}
+      {deferredPrompt && (
         <button
           onClick={handleInstallClick}
           className="fixed bottom-4 right-4 bg-orange-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 flex items-center space-x-2 hover:bg-orange-800 transition-all transform hover:scale-105"
