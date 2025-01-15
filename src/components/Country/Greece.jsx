@@ -216,21 +216,21 @@ function Greece() {
           {
             name: "Acropolis of Athens",
             location: "Athens",
-            image: "https://images.unsplash.com/photo-1564507592333-c60657eea523",
+            image: "https://images.unsplash.com/photo-1555993539-1732b0258235",
             description: "Ancient citadel on a rocky outcrop",
             tags: ["UNESCO Site", "History", "Architecture"]
           },
           {
             name: "Santorini",
             location: "Cyclades",
-            image: "https://images.unsplash.com/photo-1561361513-2d000a50f0dc",
+            image: "https://images.unsplash.com/photo-1613395877344-13d4a8e0d49e",  // Updated Santorini image
             description: "Famous for its stunning sunsets and white-washed buildings",
             tags: ["Island", "Scenic", "Romantic"]
           },
           {
             name: "Meteora",
             location: "Thessaly",
-            image: "https://images.unsplash.com/photo-1477587458883-47145ed94245",
+            image: "https://images.unsplash.com/photo-1579606032821-4e6161c81bd3",  // New Meteora image
             description: "Monasteries perched on top of rock pillars",
             tags: ["UNESCO Site", "Spiritual", "Nature"]
           }
@@ -477,7 +477,7 @@ function Greece() {
               <ul className="space-y-2">
                 {greeceData.sections[0].content.travelGuide.shopping.items.map((item, idx) => (
                   <li key={idx} className="flex items-center text-gray-600">
-                    <span className="text-orange-500 mr-2">🛍���</span> {item}
+                    <span className="text-orange-500 mr-2">🛍️</span> {item}
                   </li>
                 ))}
               </ul>
