@@ -148,25 +148,28 @@ function App() {
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const navigate = useNavigate();
-  const [installPrompt, setInstallPrompt] = React.useState(null);
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [isInstallable, setIsInstallable] = useState(false);
 
   useEffect(() => {
     window.addEventListener('beforeinstallprompt', (e) => {
       e.preventDefault();
       setInstallPrompt(e);
+      setIsInstallable(true);
+    });
+
+    window.addEventListener('appinstalled', () => {
+      setInstallPrompt(null);
+      setIsInstallable(false);
     });
   }, []);
 
-  const handleInstallClick = () => {
-    if (installPrompt) {
-      installPrompt.prompt();
-      installPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === 'accepted') {
-          console.log('User accepted installation');
-        }
-        setInstallPrompt(null);
-      });
-    }
+  const handleInstallClick = async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    console.log(`User response to the install prompt: ${outcome}`);
+    setInstallPrompt(null);
   };
 
   // Close mobile menu when clicking outside
@@ -524,12 +527,15 @@ function App() {
           </div>
         </div>
       </footer>
-      {installPrompt && (
+      {isInstallable && (
         <button
           onClick={handleInstallClick}
-          className="fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-full shadow-lg z-50"
+          className="fixed bottom-4 right-4 bg-orange-900 text-white px-6 py-3 rounded-full shadow-2xl z-50 flex items-center space-x-2 hover:bg-orange-800 transition-all transform hover:scale-105"
         >
-          Install App
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+          </svg>
+          <span>Install App</span>
         </button>
       )}
     </div>
