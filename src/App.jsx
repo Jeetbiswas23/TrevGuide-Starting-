@@ -148,6 +148,26 @@ function App() {
   const dropdownRef = useRef(null);
   const mobileMenuRef = useRef(null);
   const navigate = useNavigate();
+  const [installPrompt, setInstallPrompt] = React.useState(null);
+
+  useEffect(() => {
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    });
+  }, []);
+
+  const handleInstallClick = () => {
+    if (installPrompt) {
+      installPrompt.prompt();
+      installPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted installation');
+        }
+        setInstallPrompt(null);
+      });
+    }
+  };
 
   // Close mobile menu when clicking outside
   useEffect(() => {
@@ -504,6 +524,14 @@ function App() {
           </div>
         </div>
       </footer>
+      {installPrompt && (
+        <button
+          onClick={handleInstallClick}
+          className="fixed bottom-4 right-4 bg-orange-500 text-white px-4 py-2 rounded-full shadow-lg z-50"
+        >
+          Install App
+        </button>
+      )}
     </div>
   );
 }
