@@ -368,46 +368,50 @@ function App() {
         </div>
       </header>
 
-      <main className="flex-grow">
-        <Routes>
-          <Route path="/" element={
-            <Home 
-              popularPlaces={popularPlaces} 
-              testimonials={testimonials} 
-              travelTips={travelTips} 
-            />
-          } />
-          <Route path="/signup" element={<Signup setUsername={setUsername} />} />
-          <Route path="/countries" element={<Countries />} />
-          <Route 
-            path="/dashboard" 
-            element={
-              username ? (
-                <Dashboard 
-                  username={username}
-                  userProfile={{
-                    bio: localStorage.getItem('bio'),
-                    location: localStorage.getItem('location'),
-                    joinDate: localStorage.getItem('joinDate')
-                  }}
+      <main className="flex-grow overflow-x-hidden">
+        <div className="max-w-full">
+          <Routes>
+            <Route path="/" element={
+              <div className="w-full overflow-x-hidden">
+                <Home 
+                  popularPlaces={popularPlaces} 
+                  testimonials={testimonials} 
+                  travelTips={travelTips} 
                 />
-              ) : (
-                <Navigate to="/signup" replace />
-              )
-            } 
-          />
-          <Route path="/country/india" element={<India />} />
-          <Route path="/country/japan" element={<Japan />} />
-          <Route path="/country/france" element={<France />} />
-          <Route path="/country/italy" element={<Italy />} />
-        </Routes>
+              </div>
+            } />
+            <Route path="/signup" element={<Signup setUsername={setUsername} />} />
+            <Route path="/countries" element={<Countries />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                username ? (
+                  <Dashboard 
+                    username={username}
+                    userProfile={{
+                      bio: localStorage.getItem('bio'),
+                      location: localStorage.getItem('location'),
+                      joinDate: localStorage.getItem('joinDate')
+                    }}
+                  />
+                ) : (
+                  <Navigate to="/signup" replace />
+                )
+              } 
+            />
+            <Route path="/country/india" element={<India />} />
+            <Route path="/country/japan" element={<Japan />} />
+            <Route path="/country/france" element={<France />} />
+            <Route path="/country/italy" element={<Italy />} />
+          </Routes>
+        </div>
       </main>
 
-      <footer className="bg-gradient-to-r from-orange-900 to-orange-700 text-white py-8 sm:py-12">
-        <div className="container mx-auto px-4 sm:px-6">
-          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
+      <footer className="bg-gradient-to-r from-orange-900 to-orange-700 text-white py-8 sm:py-12 overflow-x-hidden">
+        <div className="container mx-auto px-4 sm:px-6 max-w-[100vw]">
+          <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-8 lg:gap-12">
             {/* Logo and Description */}
-            <div className="col-span-2 sm:col-span-2 lg:col-span-1 space-y-4">
+            <div className="col-span-2 sm:col-span-2 lg:col-span-1 space-y-4 px-2">
               <div className="flex items-center space-x-2">
                 <svg 
                   className="w-6 h-6" 
@@ -467,7 +471,7 @@ function App() {
 
             {/* Footer Links */}
             {['Explore', 'Company', 'Support'].map((section, index) => (
-              <div key={index} className="space-y-3 sm:space-y-4">
+              <div key={index} className="space-y-3 sm:space-y-4 px-2">
                 <h4 className="text-base sm:text-lg font-semibold tracking-wide">{section}</h4>
                 <ul className="space-y-2 sm:space-y-3">
                   {['About', 'Services', 'Contact'].map((item, i) => (
@@ -487,7 +491,7 @@ function App() {
           </div>
 
           {/* Copyright */}
-          <div className="border-t border-orange-800/50 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center">
+          <div className="border-t border-orange-800/50 mt-8 sm:mt-12 pt-6 sm:pt-8 text-center px-2">
             <p className="text-xs sm:text-sm text-orange-100/80">
               &copy; {new Date().getFullYear()} TrevGuide. All rights reserved.
             </p>
