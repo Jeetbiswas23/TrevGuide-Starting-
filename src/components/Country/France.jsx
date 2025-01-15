@@ -541,7 +541,7 @@ function France() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <div className="relative h-screen">
+      <div className="relative h-[60vh] sm:h-[70vh] lg:h-screen">
         <div className="absolute inset-0">
           <img 
             src={franceData.intro.image}
@@ -551,7 +551,7 @@ function France() {
         </div>
         
         {/* Gradient Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/70" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/20 to-black/60" />
 
         {/* Hero Content */}
         <motion.div 
@@ -560,20 +560,19 @@ function France() {
           transition={{ duration: 1 }}
           className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4"
         >
-          <h1 className="text-8xl font-bold mb-6">{franceData.intro.title}</h1>
-          <p className="text-3xl font-light mb-12">{franceData.intro.subtitle}</p>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6">{franceData.intro.title}</h1>
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light mb-8 sm:mb-12">{franceData.intro.subtitle}</p>
           
           {/* Navigation Pills */}
-          <div className="flex gap-4 bg-white/10 backdrop-blur-md p-2 rounded-full">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 bg-white/10 backdrop-blur-md p-2 rounded-full max-w-full overflow-x-auto">
             {franceData.sections.map((section) => (
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                className={`px-6 py-3 rounded-full text-lg font-medium transition-all ${
-                  activeSection === section.id 
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-base sm:text-lg font-medium transition-all whitespace-nowrap
+                  ${activeSection === section.id 
                     ? 'bg-white text-orange-900' 
-                    : 'hover:bg-white/10'
-                }`}
+                    : 'hover:bg-white/10'}`}
               >
                 <span className="mr-2">{section.icon}</span>
                 {section.title}
@@ -586,33 +585,33 @@ function France() {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+          className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2"
         >
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+          <div className="w-5 sm:w-6 h-8 sm:h-10 border-2 border-white/50 rounded-full flex justify-center">
             <div className="w-1 h-2 bg-white rounded-full mt-2" />
           </div>
         </motion.div>
       </div>
 
-      {/* Basic Country Info Section - Updated */}
-      <div className="bg-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-12">
+      {/* Basic Country Info Section */}
+      <div className="bg-white py-8 sm:py-12 lg:py-16">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
             {/* Flag and Currency Column */}
-            <div className="w-full md:w-1/3 flex flex-col items-center">
+            <div className="w-full lg:w-1/3 flex flex-col items-center">
               <img 
                 src={franceData.intro.flag}
-                alt="Flag of France"
-                className="w-64 h-auto shadow-lg rounded-lg animate-flag-wave"
+                alt="Flag"
+                className="w-48 sm:w-64 h-auto shadow-lg rounded-lg animate-flag-wave"
               />
-              <div className="mt-8 text-center">
-                <span className="text-6xl font-bold text-orange-900 mb-2 block">€</span>
-                <span className="text-xl text-gray-600">1 USD ≈ €0.92</span>
+              <div className="mt-6 sm:mt-8 text-center">
+                <span className="text-4xl sm:text-6xl font-bold text-orange-900 mb-2 block">€</span>
+                <span className="text-lg sm:text-xl text-gray-600">1 USD ≈ €0.92</span>
               </div>
             </div>
 
             {/* Country Info Grid */}
-            <div className="w-full md:w-2/3 grid grid-cols-2 gap-6">
+            <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               {Object.entries(franceData.intro.basicInfo).map(([key, value]) => (
                 key !== 'currency' && (
                   <div key={key} className="bg-orange-50 p-6 rounded-xl">
@@ -629,14 +628,13 @@ function France() {
       </div>
 
       <div className="bg-gray-50 min-h-screen">
-        <div className="container mx-auto px-4 py-16">
+        <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16">
           {activeSection === 'discover' && renderDiscoverSection()}
           {activeSection === 'explore' && (
             <motion.section 
               initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="py-20"
+              animate={{ opacity: 1 }}
+              className="space-y-12 sm:space-y-16"
             >
               <div className="container mx-auto px-4">
                 <div className="grid grid-cols-1 gap-16">
@@ -676,9 +674,8 @@ function France() {
           {activeSection === 'experience' && (
             <motion.section 
               initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="py-20"
+              animate={{ opacity: 1 }}
+              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8"
             >
               <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {franceData.sections.find(s => s.id === 'experience').activities.map((activity, index) => (
