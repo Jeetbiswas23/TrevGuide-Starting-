@@ -212,14 +212,14 @@ function Spain() {
           {
             name: "La Sagrada Familia",
             location: "Barcelona",
-            image: "https://images.unsplash.com/photo-1583779457094-ab6f9164a692",
+            image: "https://images.unsplash.com/photo-1567593810070-7a3d471af022",
             description: "Gaudí's masterpiece cathedral",
             tags: ["Architecture", "UNESCO", "Art"]
           },
           {
             name: "Alhambra",
             location: "Granada",
-            image: "https://images.unsplash.com/photo-1591292082066-0e20b94c7eaf",
+            image: "https://images.unsplash.com/photo-1604580864964-0462f5d5b1a8",
             description: "Moorish palace and fortress complex",
             tags: ["History", "UNESCO", "Palace"]
           },
