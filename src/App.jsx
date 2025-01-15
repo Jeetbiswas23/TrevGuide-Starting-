@@ -9,6 +9,7 @@ import India from './components/Country/India';
 import Japan from './components/Country/Japan';
 import France from './components/Country/France';
 import Italy from './components/Country/Italy';
+import Spain from './components/Country/Spain';
 
 function ScrollToTop() {
   const location = useLocation();
@@ -403,6 +404,7 @@ function App() {
             <Route path="/country/japan" element={<Japan />} />
             <Route path="/country/france" element={<France />} />
             <Route path="/country/italy" element={<Italy />} />
+            <Route path="/country/spain" element={<Spain />} />
           </Routes>
         </div>
       </main>

@@ -231,7 +231,8 @@ function Countries() {
       'Japan': '/country/japan',
       'India': '/country/india',
       'France': '/country/france',
-      'Italy': '/country/italy'  
+      'Italy': '/country/italy',
+      'Spain': '/country/spain',
     };
 
     const route = countryRoutes[countryName] || `/country/${countryName.toLowerCase()}`;
