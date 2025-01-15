@@ -230,44 +230,78 @@ function App() {
 
             {/* Mobile Menu Button */}
             <button 
-              className="lg:hidden p-2 hover:bg-orange-800/50 rounded-lg transition-colors z-20"
+              className="lg:hidden relative w-10 h-10 flex items-center justify-center rounded-lg hover:bg-orange-800/30 transition-colors z-20 group"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
-              <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : ''}`} />
-              <span className={`block w-6 h-0.5 bg-white my-1.5 transition-all duration-300 ${isMobileMenuOpen ? 'opacity-0' : ''}`} />
-              <span className={`block w-6 h-0.5 bg-white transition-all duration-300 ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : ''}`} />
+              <div className="flex flex-col items-center justify-center w-6 h-6 relative">
+                <span className={`w-5 h-0.5 bg-white rounded-full transform transition-all duration-300 ease-out-back
+                  ${isMobileMenuOpen ? 'rotate-45 translate-y-1.5' : 'translate-y-[-4px] group-hover:translate-y-[-5px]'}`} 
+                />
+                <span className={`w-4 h-0.5 bg-white rounded-full transform transition-all duration-300 ease-out-back
+                  ${isMobileMenuOpen ? 'opacity-0 translate-x-2' : 'opacity-100 group-hover:w-5'}`} 
+                />
+                <span className={`w-5 h-0.5 bg-white rounded-full transform transition-all duration-300 ease-out-back
+                  ${isMobileMenuOpen ? '-rotate-45 -translate-y-1.5' : 'translate-y-[4px] group-hover:translate-y-[5px]'}`} 
+                />
+              </div>
             </button>
 
             {/* Desktop & Mobile Navigation */}
             <div 
-              className={`fixed inset-0 lg:relative lg:inset-auto bg-orange-900/95 lg:bg-transparent 
-                transform transition-all duration-300 ease-in-out 
+              className={`fixed inset-0 lg:relative lg:inset-auto bg-gradient-to-b from-orange-900 to-orange-800 lg:bg-none
+                transform transition-all duration-500 ease-in-out backdrop-blur-sm
                 ${isMobileMenuOpen 
                   ? 'translate-y-0 opacity-100 visible' 
                   : '-translate-y-full lg:translate-y-0 opacity-0 lg:opacity-100 invisible lg:visible'
                 } 
                 lg:transform-none lg:transition-none z-10`}
             >
-              <div className={`flex flex-col lg:flex-row items-center justify-center h-full space-y-8 lg:space-y-0 lg:space-x-8 p-4 lg:p-0
-                transform transition-all duration-300 delay-100
-                ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 lg:translate-y-0 lg:opacity-100'}`}
+              <div className={`flex flex-col lg:flex-row items-center justify-start lg:justify-center
+                min-h-screen lg:min-h-0 pt-24 lg:pt-0 px-6 lg:px-0
+                space-y-8 lg:space-y-0 lg:space-x-8
+                transform transition-all duration-500 ease-out
+                ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0 lg:translate-y-0 lg:opacity-100'}`}
               >
                 {/* Navigation Links */}
-                {['Home', 'Countries', 'Contact'].map((item) => (
-                  <Link
-                    key={item}
-                    to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
-                    className="text-xl lg:text-base text-white hover:text-orange-200 transition-colors"
+                <div className="w-full lg:w-auto space-y-6 lg:space-y-0 lg:space-x-8">
+                  {['Home', 'Countries', 'Contact'].map((item) => (
+                    <Link
+                      key={item}
+                      to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
+                      className="flex items-center justify-center lg:inline-block
+                        text-xl lg:text-base text-white 
+                        hover:text-orange-200 transition-colors
+                        py-4 lg:py-2 w-full lg:w-auto
+                        border-b border-orange-800/30 lg:border-none"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      {item}
+                    </Link>
+                  ))}
+                </div>
+                
+                {/* Sign Up Button - Mobile Specific Styling */}
+                {!username && (
+                  <Link 
+                    to="/signup" 
+                    className="bg-white text-orange-900 
+                      px-8 py-4 lg:py-2
+                      rounded-xl lg:rounded-full 
+                      hover:bg-orange-100 transition-colors 
+                      font-semibold text-xl lg:text-base 
+                      w-full lg:w-auto text-center
+                      shadow-lg hover:shadow-xl
+                      transform hover:-translate-y-0.5 transition-all"
                     onClick={() => setIsMobileMenuOpen(false)}
                   >
-                    {item}
+                    Sign Up
                   </Link>
-                ))}
+                )}
                 
-                {/* User Menu */}
-                {username ? (
-                  <div className="relative" ref={dropdownRef}>
+                {/* User Menu - Mobile Specific Styling */}
+                {username && (
+                  <div className="relative w-full lg:w-auto flex justify-center" ref={dropdownRef}>
                     <button 
                       onClick={() => setShowDropdown(!showDropdown)}
                       className="flex items-center space-x-2"
@@ -285,7 +319,7 @@ function App() {
                     {showDropdown && (
                       <>
                         <div className="fixed inset-0 bg-black/5 backdrop-blur-xs" onClick={() => setShowDropdown(false)} />
-                        <div className="absolute right-0 mt-2 w-64 bg-white rounded-xl shadow-xl py-2 z-50 animate-dropdownFade">
+                        <div className="absolute right-0 lg:right-0 mt-2 w-64 bg-white rounded-xl shadow-xl py-2 z-50 animate-dropdownFade">
                           <div className="px-4 md:px-6 py-3 md:py-4 border-b border-gray-100">
                             <p className="text-sm text-gray-500 mb-1">Welcome back,</p>
                             <p className="text-base md:text-lg font-semibold text-orange-900">{username}</p>
@@ -327,14 +361,6 @@ function App() {
                       </>
                     )}
                   </div>
-                ) : (
-                  <Link 
-                    to="/signup" 
-                    className="bg-white text-orange-900 px-6 py-2 rounded-full hover:bg-orange-100 transition-colors font-semibold"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                  >
-                    Sign Up
-                  </Link>
                 )}
               </div>
             </div>
