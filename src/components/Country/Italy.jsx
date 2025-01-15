@@ -265,13 +265,13 @@ function Italy() {
   };
 
   const renderDiscoverSection = () => (
-    <div className="space-y-20">
+    <div className="space-y-12 md:space-y-20">
       {/* Travel Guide Section */}
-      <div className="space-y-16">
+      <div className="space-y-12 md:space-y-16">
         {/* Seasons */}
         <div>
-          <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Best Time to Visit</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-orange-900 text-center mb-6 md:mb-8">Best Time to Visit</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
             {Object.entries(italyData.sections[0].content.travelGuide.seasons).map(([season, info]) => (
               <div key={season} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
                 <h3 className="text-2xl font-bold text-orange-900 capitalize mb-4">{season}</h3>
@@ -301,8 +301,8 @@ function Italy() {
 
         {/* Budget */}
         <div>
-          <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Travel Budgets</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-orange-900 text-center mb-6 md:mb-8">Travel Budgets</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {Object.entries(italyData.sections[0].content.travelGuide.budget).map(([level, details]) => (
               <div key={level} className="bg-white rounded-2xl p-6 shadow-lg">
                 <h4 className="text-xl font-bold text-orange-900 capitalize mb-4">{level}</h4>
@@ -327,8 +327,8 @@ function Italy() {
 
         {/* Transport */}
         <div>
-          <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Getting Around</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-orange-900 text-center mb-6 md:mb-8">Getting Around</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             {italyData.sections[0].content.travelGuide.transport.types.map((type, index) => (
               <div key={index} className="bg-white rounded-2xl p-6 shadow-lg">
                 <h4 className="text-xl font-bold text-orange-900 mb-4">{type.mode}</h4>
@@ -348,9 +348,9 @@ function Italy() {
         </div>
 
         {/* Visa */}
-        <div className="bg-white rounded-2xl p-8 shadow-lg">
-          <h3 className="text-3xl font-bold text-orange-900 mb-8">Visa Information</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <div className="bg-white rounded-2xl p-6 md:p-8 shadow-lg">
+          <h3 className="text-2xl md:text-3xl font-bold text-orange-900 mb-6 md:mb-8">Visa Information</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8">
             <div>
               <h4 className="text-xl font-bold text-orange-900 mb-4">e-Visa Process</h4>
               <div className="space-y-4">
@@ -381,8 +381,8 @@ function Italy() {
 
         {/* Health Section */}
         <div>
-          <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Health & Safety</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-orange-900 text-center mb-6 md:mb-8">Health & Safety</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             <div className="bg-white rounded-2xl p-6 shadow-lg">
               <h4 className="text-xl font-bold text-orange-900 mb-4">Vaccinations</h4>
               <ul className="space-y-2">
@@ -417,8 +417,8 @@ function Italy() {
 
         {/* Cuisine Section */}
         <div>
-          <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Italian Cuisine</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-orange-900 text-center mb-6 md:mb-8">Italian Cuisine</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="bg-white rounded-2xl p-6 shadow-lg">
               <h4 className="text-xl font-bold text-orange-900 mb-4">Must Try Dishes</h4>
               <div className="grid grid-cols-1 gap-4">
@@ -450,8 +450,8 @@ function Italy() {
 
         {/* Culture Section */}
         <div>
-          <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Cultural Insights</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-orange-900 text-center mb-6 md:mb-8">Cultural Insights</h3>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
             <div className="bg-white rounded-2xl p-6 shadow-lg">
               <h4 className="text-xl font-bold text-orange-900 mb-4">Customs & Etiquette</h4>
               <ul className="space-y-3">
@@ -476,8 +476,8 @@ function Italy() {
 
         {/* Shopping Section */}
         <div>
-          <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Shopping Guide</h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <h3 className="text-2xl md:text-3xl font-bold text-orange-900 text-center mb-6 md:mb-8">Shopping Guide</h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
             <div className="bg-white rounded-2xl p-6 shadow-lg">
               <h4 className="text-xl font-bold text-orange-900 mb-4">What to Buy</h4>
               <ul className="space-y-2">
@@ -513,8 +513,8 @@ function Italy() {
 
       {/* Highlights */}
       <div>
-        <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Country Highlights</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <h3 className="text-2xl md:text-3xl font-bold text-orange-900 text-center mb-6 md:mb-8">Country Highlights</h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {italyData.sections[0].content.highlights.map((item, index) => (
             <div 
               key={index}
@@ -541,7 +541,7 @@ function Italy() {
   return (
     <div className="relative">
       {/* Hero Section */}
-      <div className="relative h-screen">
+      <div className="relative h-[60vh] sm:h-[70vh] lg:h-screen">
         <div className="absolute inset-0">
           <img 
             src={italyData.intro.image}
@@ -560,20 +560,19 @@ function Italy() {
           transition={{ duration: 1 }}
           className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4"
         >
-          <h1 className="text-8xl font-bold mb-6">{italyData.intro.title}</h1>
-          <p className="text-3xl font-light mb-12">{italyData.intro.subtitle}</p>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6">{italyData.intro.title}</h1>
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light mb-8 sm:mb-12">{italyData.intro.subtitle}</p>
           
           {/* Navigation Pills */}
-          <div className="flex gap-4 bg-white/10 backdrop-blur-md p-2 rounded-full">
+          <div className="flex flex-wrap justify-center gap-3 sm:gap-4 bg-white/10 backdrop-blur-md p-2 rounded-full max-w-full overflow-x-auto">
             {italyData.sections.map((section) => (
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
-                className={`px-6 py-3 rounded-full text-lg font-medium transition-all ${
-                  activeSection === section.id 
+                className={`px-4 sm:px-6 py-2 sm:py-3 rounded-full text-base sm:text-lg font-medium transition-all whitespace-nowrap
+                  ${activeSection === section.id 
                     ? 'bg-white text-orange-900' 
-                    : 'hover:bg-white/10'
-                }`}
+                    : 'hover:bg-white/10'}`}
               >
                 <span className="mr-2">{section.icon}</span>
                 {section.title}
@@ -586,124 +585,126 @@ function Italy() {
         <motion.div
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.5, repeat: Infinity }}
-          className="absolute bottom-10 left-1/2 transform -translate-x-1/2"
+          className="absolute bottom-6 sm:bottom-10 left-1/2 transform -translate-x-1/2"
         >
-          <div className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center">
+          <div className="w-5 sm:w-6 h-8 sm:h-10 border-2 border-white/50 rounded-full flex justify-center">
             <div className="w-1 h-2 bg-white rounded-full mt-2" />
           </div>
         </motion.div>
       </div>
 
-      {/* Basic Country Info Section - Updated */}
-      <div className="bg-white py-16">
-        <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row items-center gap-12">
-            {/* Flag and Currency Column */}
-            <div className="w-full md:w-1/3 flex flex-col items-center">
-              <img 
-                src={italyData.intro.flag}
-                alt="Flag of Italy"
-                className="w-64 h-auto shadow-lg rounded-lg animate-flag-wave"
-              />
-              <div className="mt-8 text-center">
-                <span className="text-6xl font-bold text-orange-900 mb-2 block">€</span>
-                <span className="text-xl text-gray-600">1 USD ≈ €0.92</span>
+      {/* Main Content */}
+      <main>
+        {/* Basic Country Info Section */}
+        <div className="bg-white py-8 sm:py-12 lg:py-16">
+          <div className="container mx-auto px-4 sm:px-6">
+            <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12">
+              {/* Flag and Currency Column */}
+              <div className="w-full lg:w-1/3 flex flex-col items-center">
+                <img 
+                  src={italyData.intro.flag}
+                  alt="Flag of Italy"
+                  className="w-48 sm:w-64 h-auto shadow-lg rounded-lg animate-flag-wave"
+                />
+                <div className="mt-6 sm:mt-8 text-center">
+                  <span className="text-4xl sm:text-6xl font-bold text-orange-900 mb-2 block">€</span>
+                  <span className="text-lg sm:text-xl text-gray-600">1 USD ≈ €0.92</span>
+                </div>
               </div>
-            </div>
 
-            {/* Country Info Grid */}
-            <div className="w-full md:w-2/3 grid grid-cols-2 gap-6">
-              {Object.entries(italyData.intro.basicInfo).map(([key, value]) => (
-                key !== 'currency' && (
-                  <div key={key} className="bg-orange-50 p-6 rounded-xl">
-                    <h3 className="text-orange-900 font-semibold capitalize mb-2">
-                      {key.replace(/([A-Z])/g, ' $1').trim()}
-                    </h3>
-                    <p className="text-gray-700 text-lg">{value}</p>
-                  </div>
-                )
-              ))}
+              {/* Country Info Grid */}
+              <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
+                {Object.entries(italyData.intro.basicInfo).map(([key, value]) => (
+                  key !== 'currency' && (
+                    <div key={key} className="bg-orange-50 p-6 rounded-xl">
+                      <h3 className="text-orange-900 font-semibold capitalize mb-2">
+                        {key.replace(/([A-Z])/g, ' $1').trim()}
+                      </h3>
+                      <p className="text-gray-700 text-lg">{value}</p>
+                    </div>
+                  )
+                ))}
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div className="bg-gray-50 min-h-screen">
-        <div className="container mx-auto px-4 py-16">
-          {activeSection === 'discover' && renderDiscoverSection()}
-          {activeSection === 'explore' && (
-            <motion.section 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="py-20"
-            >
-              <div className="container mx-auto px-4">
-                <div className="grid grid-cols-1 gap-16">
-                  {italyData.sections[1].places.map((place, index) => (
-                    <div 
-                      key={index}
-                      className="flex flex-col md:flex-row gap-8 items-center"
-                    >
-                      <div className="w-full md:w-1/2">
-                        <img 
-                          src={place.image}
-                          alt={place.name}
-                          className="rounded-2xl shadow-xl w-full h-[400px] object-cover"
-                        />
-                      </div>
-                      <div className="w-full md:w-1/2 space-y-4">
-                        <h3 className="text-3xl font-bold text-orange-900">{place.name}</h3>
-                        <p className="text-orange-600">{place.location}</p>
-                        <p className="text-gray-700 text-lg">{place.description}</p>
-                        <div className="flex flex-wrap gap-2">
-                          {place.tags.map((tag, i) => (
-                            <span 
-                              key={i}
-                              className="px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-sm"
-                            >
-                              {tag}
-                            </span>
-                          ))}
+        {/* Content Sections */}
+        <div className="bg-gray-50 min-h-screen">
+          <div className="container mx-auto px-4 sm:px-6 py-8 sm:py-12 lg:py-16">
+            {activeSection === 'discover' && renderDiscoverSection()}
+            {activeSection === 'explore' && (
+              <motion.section 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-12 sm:space-y-16"
+              >
+                <div className="container mx-auto px-4">
+                  <div className="grid grid-cols-1 gap-16">
+                    {italyData.sections[1].places.map((place, index) => (
+                      <div 
+                        key={index}
+                        className="flex flex-col md:flex-row gap-8 items-center"
+                      >
+                        <div className="w-full md:w-1/2">
+                          <img 
+                            src={place.image}
+                            alt={place.name}
+                            className="rounded-2xl shadow-xl w-full h-[400px] object-cover"
+                          />
+                        </div>
+                        <div className="w-full md:w-1/2 space-y-4">
+                          <h3 className="text-3xl font-bold text-orange-900">{place.name}</h3>
+                          <p className="text-orange-600">{place.location}</p>
+                          <p className="text-gray-700 text-lg">{place.description}</p>
+                          <div className="flex flex-wrap gap-2">
+                            {place.tags.map((tag, i) => (
+                              <span 
+                                key={i}
+                                className="px-4 py-2 bg-orange-100 text-orange-800 rounded-full text-sm"
+                              >
+                                {tag}
+                              </span>
+                            ))}
+                          </div>
                         </div>
                       </div>
+                    ))}
+                  </div>
+                </div>
+              </motion.section>
+            )}
+            {activeSection === 'experience' && (
+              <motion.section 
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                className="space-y-12 sm:space-y-16"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {italyData.sections.find(s => s.id === 'experience').activities.map((activity, index) => (
+                    <div 
+                      key={index}
+                      className="bg-orange-50 rounded-2xl p-8 hover:shadow-xl transition-shadow"
+                    >
+                      <h3 className="text-2xl font-bold text-orange-900 mb-6">
+                        {activity.title}
+                      </h3>
+                      <ul className="space-y-4">
+                        {activity.items.map((item, i) => (
+                          <li key={i} className="flex items-center text-gray-700">
+                            <span className="text-orange-500 mr-3">✦</span>
+                            {item}
+                          </li>
+                        ))}
+                      </ul>
                     </div>
                   ))}
                 </div>
-              </div>
-            </motion.section>
-          )}
-          {activeSection === 'experience' && (
-            <motion.section 
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              className="py-20"
-            >
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                {italyData.sections.find(s => s.id === 'experience').activities.map((activity, index) => (
-                  <div 
-                    key={index}
-                    className="bg-orange-50 rounded-2xl p-8 hover:shadow-xl transition-shadow"
-                  >
-                    <h3 className="text-2xl font-bold text-orange-900 mb-6">
-                      {activity.title}
-                    </h3>
-                    <ul className="space-y-4">
-                      {activity.items.map((item, i) => (
-                        <li key={i} className="flex items-center text-gray-700">
-                          <span className="text-orange-500 mr-3">✦</span>
-                          {item}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                ))}
-              </div>
-            </motion.section>
-          )}
+              </motion.section>
+            )}
+          </div>
         </div>
-      </div>
+      </main>
     </div>
   );
 }
