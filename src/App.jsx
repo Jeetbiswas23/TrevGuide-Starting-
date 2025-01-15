@@ -244,14 +244,14 @@ function App() {
               className={`fixed inset-0 lg:relative lg:inset-auto bg-orange-900/95 lg:bg-transparent 
                 transform transition-all duration-300 ease-in-out 
                 ${isMobileMenuOpen 
-                  ? 'translate-x-0 opacity-100 visible' 
-                  : 'translate-x-full lg:translate-x-0 opacity-0 lg:opacity-100 invisible lg:visible'
+                  ? 'translate-y-0 opacity-100 visible' 
+                  : '-translate-y-full lg:translate-y-0 opacity-0 lg:opacity-100 invisible lg:visible'
                 } 
                 lg:transform-none lg:transition-none z-10`}
             >
               <div className={`flex flex-col lg:flex-row items-center justify-center h-full space-y-8 lg:space-y-0 lg:space-x-8 p-4 lg:p-0
                 transform transition-all duration-300 delay-100
-                ${isMobileMenuOpen ? 'translate-x-0 opacity-100' : 'translate-x-8 opacity-0 lg:translate-x-0 lg:opacity-100'}`}
+                ${isMobileMenuOpen ? 'translate-y-0 opacity-100' : '-translate-y-8 opacity-0 lg:translate-y-0 lg:opacity-100'}`}
               >
                 {/* Navigation Links */}
                 {['Home', 'Countries', 'Contact'].map((item) => (
