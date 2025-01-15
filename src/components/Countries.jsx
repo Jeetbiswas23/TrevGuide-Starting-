@@ -234,6 +234,7 @@ function Countries() {
       'Italy': '/country/italy',
       'Spain': '/country/spain',
       'Greece': '/country/greece',
+      'Thailand': '/country/thailand',
     };
 
     const route = countryRoutes[countryName] || `/country/${countryName.toLowerCase()}`;
