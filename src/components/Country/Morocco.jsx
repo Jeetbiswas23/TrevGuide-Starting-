@@ -188,7 +188,7 @@ function Morocco() {
               description: "Endless dunes and starlit nights"
             },
             {
-              image: "https://images.pexels.com/photos/14011922/pexels-photo-14011922.jpeg",  // Atlas Mountains image
+              image: "/Photos/Countries/Morocco/Atalas.jpg",  // Atlas Mountains image
               title: "Atlas Mountains",
               description: "Majestic peaks and Berber villages"
             }
