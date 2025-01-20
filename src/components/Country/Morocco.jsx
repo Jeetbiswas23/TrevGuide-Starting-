@@ -9,7 +9,7 @@ function Morocco() {
 
   const moroccoData = {
     intro: {
-      image: "https://images.unsplash.com/photo-1539020140153-e479b8c64088",
+      image: "https://images.pexels.com/photos/4388164/pexels-photo-4388164.jpeg",
       title: "Discover Morocco",
       subtitle: "Where Ancient Meets Modern",
       flag: "https://flagcdn.com/ma.svg",
@@ -178,17 +178,17 @@ function Morocco() {
           },
           highlights: [
             {
-              image: "https://images.unsplash.com/photo-1548013146-72479768bada",
+              image: "https://images.pexels.com/photos/4449617/pexels-photo-4449617.jpeg",
               title: "Vibrant Medinas",
               description: "Ancient walled cities with bustling souks"
             },
             {
-              image: "https://images.unsplash.com/photo-1489493887464-892be6d1daae",
+              image: "https://images.pexels.com/photos/4388167/pexels-photo-4388167.jpeg",
               title: "Sahara Desert",
               description: "Endless dunes and starlit nights"
             },
             {
-              image: "https://images.unsplash.com/photo-1570214476695-19bd467e6f7a",
+              image: "https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg",
               title: "Atlas Mountains",
               description: "Majestic peaks and Berber villages"
             }
@@ -203,21 +203,21 @@ function Morocco() {
           {
             name: "Marrakech Medina",
             location: "Marrakech",
-            image: "https://images.unsplash.com/photo-1553603227-2358aabe821e",
+            image: "https://images.pexels.com/photos/4553370/pexels-photo-4553370.jpeg",
             description: "UNESCO World Heritage site with vibrant souks",
             tags: ["UNESCO Site", "Culture", "Shopping"]
           },
           {
             name: "Sahara Desert",
             location: "Merzouga",
-            image: "https://images.unsplash.com/photo-1483653364400-eedcfb9f1f88",
+            image: "https://images.pexels.com/photos/4553617/pexels-photo-4553617.jpeg",
             description: "Stunning desert landscapes and camps",
             tags: ["Nature", "Adventure", "Camping"]
           },
           {
             name: "Chefchaouen",
             location: "Rif Mountains",
-            image: "https://images.unsplash.com/photo-1570214476695-19bd467e6f7a",
+            image: "https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg",
             description: "The famous blue city",
             tags: ["Photography", "Culture", "Architecture"]
           }
