@@ -178,17 +178,17 @@ function Morocco() {
           },
           highlights: [
             {
-              image: "https://images.pexels.com/photos/4449617/pexels-photo-4449617.jpeg",
+              image: "/Photos/Countries/Morocco/Vibrant.jpg",  // Medina image
               title: "Vibrant Medinas",
               description: "Ancient walled cities with bustling souks"
             },
             {
-              image: "https://images.pexels.com/photos/4388167/pexels-photo-4388167.jpeg",
+              image: "/Photos/Countries/Morocco/Sahara.jpg",  // Sahara Desert image
               title: "Sahara Desert",
               description: "Endless dunes and starlit nights"
             },
             {
-              image: "https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg",
+              image: "https://images.pexels.com/photos/14011922/pexels-photo-14011922.jpeg",  // Atlas Mountains image
               title: "Atlas Mountains",
               description: "Majestic peaks and Berber villages"
             }
