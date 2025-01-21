@@ -178,17 +178,17 @@ function Morocco() {
           },
           highlights: [
             {
-              image: "/Photos/Countries/Morocco/Vibrant.jpg",  // Medina image
+              image: "https://images.unsplash.com/photo-1553603227-2358aec59849",
               title: "Vibrant Medinas",
               description: "Ancient walled cities with bustling souks"
             },
             {
-              image: "/Photos/Countries/Morocco/Sahara.jpg",  // Sahara Desert image
+              image: "https://images.unsplash.com/photo-1489493887464-892be6d1daae",
               title: "Sahara Desert",
               description: "Endless dunes and starlit nights"
             },
             {
-              image: "/Photos/Countries/Morocco/Atalas.jpg",  // Atlas Mountains image
+              image: "https://images.unsplash.com/photo-1489749798305-4fea3ae63d43",
               title: "Atlas Mountains",
               description: "Majestic peaks and Berber villages"
             }
@@ -203,21 +203,21 @@ function Morocco() {
           {
             name: "Marrakech Medina",
             location: "Marrakech",
-            image: "/Photos/Countries/Morocco/Marrakech Medina.jpg",
+            image: "https://images.unsplash.com/photo-1553603227-2358aec59849",
             description: "UNESCO World Heritage site with vibrant souks",
             tags: ["UNESCO Site", "Culture", "Shopping"]
           },
           {
             name: "Sahara Desert",
             location: "Merzouga",
-            image: "/Photos/Countries/Morocco/SaharaDesert02.webp",
+            image: <img src="/Photos/Countries/Morocco/SaharaDesert02.webp" alt="Sahara Desert" />,
             description: "Stunning desert landscapes and camps",
             tags: ["Nature", "Adventure", "Camping"]
           },
           {
             name: "Chefchaouen",
             location: "Rif Mountains",
-            image: "/Photos/Countries/Morocco/Chefchaouen.jpg",
+            image: <img src="/Photos/Countries/Morocco/Chefchaouen.jpg" alt="Chefchaouen" />,
             description: "The famous blue city",
             tags: ["Photography", "Culture", "Architecture"]
           }
