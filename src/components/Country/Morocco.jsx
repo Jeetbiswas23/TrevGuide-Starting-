@@ -203,7 +203,7 @@ function Morocco() {
           {
             name: "Marrakech Medina",
             location: "Marrakech",
-            image: "https://images.pexels.com/photos/4553370/pexels-photo-4553370.jpeg",
+            image: "/Photos/Countries/Morocco/Marrakech Medina.jpg",
             description: "UNESCO World Heritage site with vibrant souks",
             tags: ["UNESCO Site", "Culture", "Shopping"]
           },
