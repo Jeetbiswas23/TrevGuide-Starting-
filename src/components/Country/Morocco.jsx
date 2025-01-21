@@ -217,7 +217,7 @@ function Morocco() {
           {
             name: "Chefchaouen",
             location: "Rif Mountains",
-            image: "https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg",
+            image: "/Photos/Countries/Morocco/Chefchaouen.jpg",
             description: "The famous blue city",
             tags: ["Photography", "Culture", "Architecture"]
           }
