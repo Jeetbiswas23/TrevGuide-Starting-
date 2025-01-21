@@ -178,12 +178,12 @@ function Morocco() {
           },
           highlights: [
             {
-              image: "https://images.unsplash.com/photo-1548710371-f449d9f4f617",
+              image: "https://images.unsplash.com/photo-1493246507139-91e8fad9978e",
               title: "Vibrant Medinas",
               description: "Ancient walled cities with bustling souks"
             },
             {
-              image: "https://images.unsplash.com/photo-1585003387496-7ef0fb9cb4c3",
+              image: "https://images.unsplash.com/photo-1483960149377-c91f30c16c19",
               title: "Sahara Desert",
               description: "Endless dunes and starlit nights"
             },
