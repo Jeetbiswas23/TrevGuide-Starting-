@@ -203,21 +203,21 @@ function Morocco() {
           {
             name: "Marrakech Medina",
             location: "Marrakech",
-            image: "https://images.unsplash.com/photo-1553603227-2358aec59849",
+            image: "https://images.pexels.com/photos/3889928/pexels-photo-3889928.jpeg",
             description: "UNESCO World Heritage site with vibrant souks",
             tags: ["UNESCO Site", "Culture", "Shopping"]
           },
           {
             name: "Sahara Desert",
             location: "Merzouga",
-            image: "https://images.unsplash.com/photo-1707425916463-db1d881e88f7",
+            image: "https://images.pexels.com/photos/4553618/pexels-photo-4553618.jpeg",
             description: "Stunning desert landscapes and camps",
             tags: ["Nature", "Adventure", "Camping"]
           },
           {
             name: "Chefchaouen",
             location: "Rif Mountains",
-            image: <img src="/Photos/Countries/Morocco/Chefchaouen.jpg" alt="Chefchaouen" />,
+            image: "https://images.pexels.com/photos/4388164/pexels-photo-4388164.jpeg",
             description: "The famous blue city",
             tags: ["Photography", "Culture", "Architecture"]
           }
