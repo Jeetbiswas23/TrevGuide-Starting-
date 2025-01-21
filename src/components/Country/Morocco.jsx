@@ -210,7 +210,7 @@ function Morocco() {
           {
             name: "Sahara Desert",
             location: "Merzouga",
-            image: "https://images.pexels.com/photos/4553617/pexels-photo-4553617.jpeg",
+            image: "/Photos/Countries/Morocco/SaharaDesert02.webp",
             description: "Stunning desert landscapes and camps",
             tags: ["Nature", "Adventure", "Camping"]
           },
