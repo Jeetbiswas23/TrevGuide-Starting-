@@ -183,7 +183,7 @@ function Morocco() {
               description: "Ancient walled cities with bustling souks"
             },
             {
-              image: "https://images.unsplash.com/photo-1483960149377-c91f30c16c19",
+              image: "https://images.pexels.com/photos/3889843/pexels-photo-3889843.jpeg",
               title: "Sahara Desert",
               description: "Endless dunes and starlit nights"
             },
@@ -210,7 +210,7 @@ function Morocco() {
           {
             name: "Sahara Desert",
             location: "Merzouga",
-            image: <img src="/Photos/Countries/Morocco/SaharaDesert02.webp" alt="Sahara Desert" />,
+            image: "https://images.unsplash.com/photo-1707425916463-db1d881e88f7",
             description: "Stunning desert landscapes and camps",
             tags: ["Nature", "Adventure", "Camping"]
           },
