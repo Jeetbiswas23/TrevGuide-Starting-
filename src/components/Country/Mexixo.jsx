@@ -118,12 +118,12 @@ function Mexico() {
               description: "Mayan and Aztec heritage"
             },
             {
-              image: "https://images.unsplash.com/photo-1583657763863-0f6cafe73e88",
+              image: "https://images.unsplash.com/photo-1512813195386-6cf811ad3542",
               title: "Colonial Cities",
               description: "Colorful architecture and history"
             },
             {
-              image: "https://images.unsplash.com/photo-1579100374541-367f06355a02",
+              image: "https://images.unsplash.com/photo-1512813195386-6cf811ad3542",
               title: "Beach Paradise",
               description: "Caribbean and Pacific coasts"
             }
