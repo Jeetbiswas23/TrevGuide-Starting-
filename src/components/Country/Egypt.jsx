@@ -118,7 +118,7 @@ function Egypt() {
               description: "Pyramids and temples"
             },
             {
-              image: "https://images.unsplash.com/photo-1590708668660-a5a5f29e7c11",
+              image: "https://images.unsplash.com/photo-1539650116574-8efeb43e2750",
               title: "Red Sea",
               description: "World-class diving"
             },
@@ -145,14 +145,14 @@ function Egypt() {
           {
             name: "Luxor Temple",
             location: "Luxor",
-            image: "https://images.unsplash.com/photo-1544815521-85e4122c023a",
+            image: "https://images.unsplash.com/photo-1523428096881-5bd79d043006",
             description: "Ancient Egyptian temple complex",
             tags: ["History", "Culture", "Architecture"]
           },
           {
             name: "Red Sea Coast",
             location: "Hurghada",
-            image: "https://images.unsplash.com/photo-1590708668660-a5a5f29e7c11",
+            image: "https://images.unsplash.com/photo-1523428096881-5bd79d043006",
             description: "World-famous coral reefs",
             tags: ["Beach", "Diving", "Resort"]
           }
