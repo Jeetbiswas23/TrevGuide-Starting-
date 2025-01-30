@@ -138,14 +138,14 @@ function NewZealand() {
           {
             name: "Milford Sound",
             location: "Fiordland",
-            image: "https://images.unsplash.com/photo-1578284747280-55bfa83160c3",
+            image: "https://images.unsplash.com/photo-1589871973318-9ca1258faa5d",
             description: "Stunning fiord with waterfalls",
             tags: ["Nature", "Cruise", "Photography"]
           },
           {
             name: "Rotorua",
             location: "Bay of Plenty",
-            image: "https://images.unsplash.com/photo-1584096006933-8ab08c9e0e0a",
+            image: "https://images.unsplash.com/photo-1589871973318-9ca1258faa5d",
             description: "Geothermal wonders and Māori culture",
             tags: ["Culture", "Hot Springs", "Adventure"]
           },
