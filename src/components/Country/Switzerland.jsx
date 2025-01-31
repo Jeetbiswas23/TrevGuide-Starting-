@@ -145,7 +145,7 @@ function Switzerland() {
           {
             name: "Lucerne",
             location: "Central Switzerland",
-            image: "https://images.unsplash.com/photo-1527679118471-7d6a8b09fcb4",
+            image: "https://images.unsplash.com/photo-1580137189272-c9379f8864fd",
             description: "Medieval architecture meets lake views",
             tags: ["Culture", "History", "Nature"]
           },
