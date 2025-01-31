@@ -469,7 +469,7 @@ function App() {
             <Route path="/country/egypt" element={<Egypt />} />
             <Route path="/country/mexico" element={<Mexico />} />
             <Route path="/country/switzerland" element={<Switzerland />} />
-            <Route path="/country/south%20korea" element={<Southkorea />} />
+            <Route path="/country/south-korea" element={<Southkorea />} />
 
           </Routes>
         </div>
