@@ -138,21 +138,21 @@ function SouthKorea() {
           {
             name: "Seoul",
             location: "Capital City",
-            image: "https://images.unsplash.com/photo-1601622256416-d8f0f6d8d0cb",
+            image: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17",
             description: "Modern metropolis with ancient palaces",
             tags: ["Culture", "Shopping", "Food"]
           },
           {
             name: "Busan",
             location: "South Coast",
-            image: "https://images.unsplash.com/photo-1601625193015-9795767baa47",
+            image: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17",
             description: "Coastal city with beaches and temples",
             tags: ["Beaches", "Temples", "Seafood"]
           },
           {
             name: "Jeju Island",
             location: "Jeju Province",
-            image: "https://images.unsplash.com/photo-1599825981285-5ebb35cf58c3",
+            image: "https://images.unsplash.com/photo-1534274988757-a28bf1a57c17",
             description: "Volcanic island with natural wonders",
             tags: ["Nature", "Hiking", "Beach"]
           }
