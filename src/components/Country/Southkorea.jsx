@@ -9,7 +9,7 @@ function SouthKorea() {
 
   const southKoreaData = {
     intro: {
-      image: "https://images.unsplash.com/photo-1538669715315-162dd3a6c2f1",
+      image: "https://images.unsplash.com/photo-1617653202545-931490e8d7e7",
       title: "Discover South Korea",
       subtitle: "Where Tradition Meets Innovation",
       flag: "https://flagcdn.com/kr.svg",
@@ -130,7 +130,53 @@ function SouthKorea() {
           ]
         }
       },
-      // ...add more sections similar to Switzerland's data structure
+      {
+        id: 'explore',
+        icon: '🗺️',
+        title: 'Must Visit',
+        places: [
+          {
+            name: "Seoul",
+            location: "Capital City",
+            image: "https://images.unsplash.com/photo-1601622256416-d8f0f6d8d0cb",
+            description: "Modern metropolis with ancient palaces",
+            tags: ["Culture", "Shopping", "Food"]
+          },
+          {
+            name: "Busan",
+            location: "South Coast",
+            image: "https://images.unsplash.com/photo-1601625193015-9795767baa47",
+            description: "Coastal city with beaches and temples",
+            tags: ["Beaches", "Temples", "Seafood"]
+          },
+          {
+            name: "Jeju Island",
+            location: "Jeju Province",
+            image: "https://images.unsplash.com/photo-1599825981285-5ebb35cf58c3",
+            description: "Volcanic island with natural wonders",
+            tags: ["Nature", "Hiking", "Beach"]
+          }
+        ]
+      },
+      {
+        id: 'experience',
+        icon: '✨',
+        title: 'Experiences',
+        activities: [
+          {
+            title: "Culture",
+            items: ["Temple stays", "K-pop concerts", "Traditional markets"]
+          },
+          {
+            title: "Food",
+            items: ["Korean BBQ", "Street food tours", "Kimchi making"]
+          },
+          {
+            title: "Activities",
+            items: ["Hiking mountains", "Hot springs", "Shopping districts"]
+          }
+        ]
+      }
     ]
   };
 
