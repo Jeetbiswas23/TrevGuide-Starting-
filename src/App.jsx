@@ -17,6 +17,7 @@ import Brazil from './components/Country/Brazil';
 import NewZealand from './components/Country/NewZealand';
 import Egypt from './components/Country/Egypt';
 import Mexico from './components/Country/Mexixo';
+import Switzerland from './components/Country/Switzerland';
 
 
 function ScrollToTop() {
@@ -466,6 +467,7 @@ function App() {
             <Route path="/country/new-zealand" element={<NewZealand />} />
             <Route path="/country/egypt" element={<Egypt />} />
             <Route path="/country/mexico" element={<Mexico />} />
+            <Route path="/country/switzerland" element={<Switzerland />} />
 
           </Routes>
         </div>
