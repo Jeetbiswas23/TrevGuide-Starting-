@@ -118,7 +118,7 @@ function Portugal() {
               description: "Centuries of rich history and culture"
             },
             {
-              image: "https://images.unsplash.com/photo-1558334466-af6b1b3f4d3b",
+              image: "https://images.unsplash.com/photo-1513735492246-483525079686",
               title: "Coastal Beauty",
               description: "Golden beaches and dramatic cliffs"
             },
