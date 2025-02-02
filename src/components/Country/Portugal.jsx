@@ -1,179 +1,179 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 
-function Vietnam() {
+function Portugal() {
   const [activeSection, setActiveSection] = useState('discover');
   const contentRef = useRef(null);
   const { scrollYProgress } = useScroll();
   const y = useTransform(scrollYProgress, [0, 1], ['0%', '100%']);
 
-  const vietnamData = {
+  const portugalData = {
     intro: {
-      image: "https://images.unsplash.com/photo-1557750255-c76072a7aad1",
-      title: "Discover Vietnam",
-      subtitle: "Land of the Ascending Dragon",
-      flag: "https://flagcdn.com/vn.svg",
+      image: "https://images.unsplash.com/photo-1555881400-74d7acaacd8b",
+      title: "Discover Portugal",
+      subtitle: "Land of Discovery and Charm",
+      flag: "https://flagcdn.com/pt.svg",
       basicInfo: {
-        capital: "Hanoi",
-        language: "Vietnamese",
-        population: "97.3 Million",
+        capital: "Lisbon",
+        language: "Portuguese",
+        population: "10.3 Million",
         currency: {
-          name: "Vietnamese Dong (VND)",
-          symbol: "₫",
-          rate: "1 USD ≈ 23,000 VND"
+          name: "Euro (EUR)",
+          symbol: "€",
+          rate: "1 USD ≈ 0.85 EUR"
         },
-        timeZone: "GMT+7",
+        timeZone: "GMT+1",
         drivingSide: "Right",
-        callingCode: "+84"
+        callingCode: "+351"
       }
     },
     sections: [
       {
         id: 'discover',
-        icon: '🌺',
+        icon: '🌞',
         title: 'Discover',
         content: {
           travelGuide: {
             seasons: {
               spring: {
-                months: "February to April",
-                temp: "20°C to 25°C",
-                description: "Pleasant temperatures, light rain",
-                highlights: ["Tet Festival", "Flower festivals", "Temple visits"]
+                months: "March to May",
+                temp: "15°C to 20°C",
+                description: "Mild temperatures, occasional rain",
+                highlights: ["Flower festivals", "Wine tours", "City exploring"]
               },
               summer: {
-                months: "May to August",
-                temp: "28°C to 35°C",
-                description: "Hot and humid, occasional rain",
-                highlights: ["Beach activities", "Island hopping", "Cultural festivals"]
+                months: "June to August",
+                temp: "25°C to 30°C",
+                description: "Hot and dry, perfect beach weather",
+                highlights: ["Beach activities", "Music festivals", "Street fairs"]
               },
               autumn: {
                 months: "September to November",
-                temp: "20°C to 25°C",
-                description: "Cool and dry, best season",
-                highlights: ["Rice harvests", "Mid-autumn festival", "Trekking"]
+                temp: "15°C to 25°C",
+                description: "Pleasant temperatures, wine harvest",
+                highlights: ["Wine harvest", "Cultural events", "Surfing"]
               },
               winter: {
-                months: "December to January",
-                temp: "15°C to 20°C",
-                description: "Cool in north, mild in south",
-                highlights: ["Mountain views", "Hot springs", "New Year celebrations"]
+                months: "December to February",
+                temp: "8°C to 15°C",
+                description: "Mild winters, some rain",
+                highlights: ["Christmas markets", "New Year celebrations", "Historic sites"]
               }
             },
             budget: {
               backpacker: {
-                daily: "$20-30",
+                daily: "€40-60",
                 accommodation: "Hostels & Guesthouses",
-                food: "Street food & Local markets",
-                transport: "Public buses & Motorbikes"
+                food: "Local cafes & Markets",
+                transport: "Public transport"
               },
               midRange: {
-                daily: "$50-100",
-                accommodation: "3-star hotels & Boutique stays",
-                food: "Local restaurants & Cafes",
-                transport: "Private cars & Domestic flights"
+                daily: "€100-200",
+                accommodation: "3-star hotels & B&Bs",
+                food: "Restaurants & Wine bars",
+                transport: "Rental cars & Trains"
               },
               luxury: {
-                daily: "$200+",
+                daily: "€300+",
                 accommodation: "5-star hotels & Resorts",
-                food: "Fine dining & Food tours",
-                transport: "Private tours & Luxury transfers"
+                food: "Fine dining & Wine tasting",
+                transport: "Private tours & First-class"
               }
             },
             transport: {
               types: [
                 {
-                  mode: "Motorbike",
-                  cost: "$5-10 per day",
-                  description: "Popular way to explore cities",
-                  tips: ["Get insurance", "Wear helmet", "Check local rules"]
+                  mode: "Train",
+                  cost: "€20-50 per trip",
+                  description: "Efficient intercity connections",
+                  tips: ["Book in advance", "Get CP rail pass", "Check schedules"]
                 },
                 {
-                  mode: "Sleeper Bus",
-                  cost: "$10-30 per trip",
-                  description: "Common for long distances",
-                  tips: ["Book direct", "Choose reputable companies", "Bring warm clothes"]
+                  mode: "Metro",
+                  cost: "€1.50 per ride",
+                  description: "Best for city travel",
+                  tips: ["Buy day passes", "Keep ticket", "Check operating hours"]
                 },
                 {
-                  mode: "Domestic Flights",
-                  cost: "$30-100",
-                  description: "Quick travel between major cities",
-                  tips: ["Book early", "Compare airlines", "Check baggage limits"]
+                  mode: "Car Rental",
+                  cost: "€30-70 per day",
+                  description: "Freedom to explore countryside",
+                  tips: ["Book early", "Get insurance", "Check toll systems"]
                 }
               ]
             },
             visa: {
-              eVisa: {
-                process: "Online application",
-                duration: "30 days",
-                cost: "$25",
-                requirements: ["Valid passport", "Digital photo", "Travel itinerary", "Accommodation details"]
+              schengen: {
+                process: "Visa-free for many countries",
+                duration: "90 days",
+                cost: "Free",
+                requirements: ["Valid passport", "Travel insurance", "Return ticket", "Hotel booking"]
               }
             }
           },
           highlights: [
             {
-              image: "https://images.unsplash.com/photo-1528127269322-539801943592",
-              title: "Natural Beauty",
-              description: "From limestone karsts to pristine beaches"
+              image: "https://images.unsplash.com/photo-1513735492246-483525079686",
+              title: "Historic Legacy",
+              description: "Centuries of rich history and culture"
             },
             {
-              image: "https://images.unsplash.com/photo-1514282401047-d79a71a590e8",
-              title: "Rich Culture",
-              description: "Ancient traditions meet modern life"
+              image: "https://images.unsplash.com/photo-1558334466-af6b1b3f4d3b",
+              title: "Coastal Beauty",
+              description: "Golden beaches and dramatic cliffs"
             },
             {
-              image: "https://images.unsplash.com/photo-1583417319070-4a69db38a482",
-              title: "Culinary Paradise",
-              description: "World-renowned street food"
+              image: "https://images.unsplash.com/photo-1585208798174-6cedd86e019a",
+              title: "Wine Culture",
+              description: "World-famous Port wine and vineyards"
             }
           ]
         }
       },
       {
         id: 'explore',
-        icon: '🏯',
+        icon: '🏰',
         title: 'Must Visit',
         places: [
           {
-            name: "Ha Long Bay",
-            location: "Quang Ninh Province",
-            image: "https://images.unsplash.com/photo-1528127269322-539801943592",
-            description: "UNESCO World Heritage limestone karsts",
-            tags: ["Nature", "Cruise", "Photography"]
+            name: "Porto",
+            location: "Northern Portugal",
+            image: "https://images.unsplash.com/photo-1558334466-af6b1b3f4d3b",
+            description: "Historic riverside city known for Port wine",
+            tags: ["Wine", "History", "Architecture"]
           },
           {
-            name: "Hoi An",
-            location: "Quang Nam Province",
-            image: "https://images.unsplash.com/photo-1559592413-7cec4d0cae2b",
-            description: "Ancient trading port with lantern-lit streets",
-            tags: ["Culture", "Shopping", "Architecture"]
+            name: "Algarve",
+            location: "Southern Portugal",
+            image: "https://images.unsplash.com/photo-1507501336603-6e31db2be093",
+            description: "Stunning beaches and coastal formations",
+            tags: ["Beaches", "Water sports", "Resorts"]
           },
           {
-            name: "Sapa",
-            location: "Lao Cai Province",
-            image: "https://images.unsplash.com/photo-1555921015-5532091f6026",
-            description: "Mountain town with rice terraces",
-            tags: ["Trekking", "Ethnic Culture", "Scenery"]
+            name: "Sintra",
+            location: "Near Lisbon",
+            image: "https://images.unsplash.com/photo-1559627755-c1b6355a616b",
+            description: "Fairy-tale palaces and mystical gardens",
+            tags: ["Castles", "UNESCO", "Nature"]
           }
         ]
       },
       {
         id: 'experience',
-        icon: '🍜',
+        icon: '🍷',
         title: 'Experiences',
         activities: [
           {
-            title: "Food",
-            items: ["Street food tours", "Cooking classes", "Coffee culture"]
+            title: "Food & Wine",
+            items: ["Port wine tasting", "Seafood feasts", "Pastel de nata"]
           },
           {
             title: "Culture",
-            items: ["Temple visits", "Water puppet shows", "Traditional crafts"]
+            items: ["Fado music", "Historic monasteries", "Traditional festivals"]
           },
           {
             title: "Adventure",
-            items: ["Cave exploration", "Motorcycle tours", "River cruises"]
+            items: ["Surfing", "Hiking", "River cruises"]
           }
         ]
       }
@@ -188,7 +188,7 @@ function Vietnam() {
         <div>
           <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Best Time to Visit</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {Object.entries(vietnamData.sections[0].content.travelGuide.seasons).map(([season, info]) => (
+            {Object.entries(portugalData.sections[0].content.travelGuide.seasons).map(([season, info]) => (
               <div key={season} className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all">
                 <h3 className="text-2xl font-bold text-orange-900 capitalize mb-4">{season}</h3>
                 <div className="space-y-4">
@@ -219,7 +219,7 @@ function Vietnam() {
         <div>
           <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Travel Budgets</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {Object.entries(vietnamData.sections[0].content.travelGuide.budget).map(([level, details]) => (
+            {Object.entries(portugalData.sections[0].content.travelGuide.budget).map(([level, details]) => (
               <div key={level} className="bg-white rounded-2xl p-6 shadow-lg">
                 <h4 className="text-xl font-bold text-orange-900 capitalize mb-4">{level}</h4>
                 <div className="text-3xl font-bold text-orange-600 mb-4">{details.daily}</div>
@@ -245,7 +245,7 @@ function Vietnam() {
         <div>
           <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Getting Around</h3>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {vietnamData.sections[0].content.travelGuide.transport.types.map((type, index) => (
+            {portugalData.sections[0].content.travelGuide.transport.types.map((type, index) => (
               <div key={index} className="bg-white rounded-2xl p-6 shadow-lg">
                 <h4 className="text-xl font-bold text-orange-900 mb-4">{type.mode}</h4>
                 <div className="text-2xl font-bold text-orange-600 mb-4">{type.cost}</div>
@@ -268,23 +268,23 @@ function Vietnam() {
           <h3 className="text-3xl font-bold text-orange-900 mb-8">Visa Information</h3>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div>
-              <h4 className="text-xl font-bold text-orange-900 mb-4">e-Visa Process</h4>
+              <h4 className="text-xl font-bold text-orange-900 mb-4">Schengen Visa Process</h4>
               <div className="space-y-4">
-                <p className="text-gray-700">{vietnamData.sections[0].content.travelGuide.visa.eVisa.process}</p>
+                <p className="text-gray-700">{portugalData.sections[0].content.travelGuide.visa.schengen.process}</p>
                 <div className="flex items-center text-gray-600">
                   <span className="font-medium mr-2">Duration:</span>
-                  {vietnamData.sections[0].content.travelGuide.visa.eVisa.duration}
+                  {portugalData.sections[0].content.travelGuide.visa.schengen.duration}
                 </div>
                 <div className="flex items-center text-gray-600">
                   <span className="font-medium mr-2">Cost:</span>
-                  {vietnamData.sections[0].content.travelGuide.visa.eVisa.cost}
+                  {portugalData.sections[0].content.travelGuide.visa.schengen.cost}
                 </div>
               </div>
             </div>
             <div>
               <h4 className="text-xl font-bold text-orange-900 mb-4">Requirements</h4>
               <ul className="space-y-2">
-                {vietnamData.sections[0].content.travelGuide.visa.eVisa.requirements.map((req, idx) => (
+                {portugalData.sections[0].content.travelGuide.visa.schengen.requirements.map((req, idx) => (
                   <li key={idx} className="flex items-center text-gray-600">
                     <span className="text-orange-500 mr-2">✓</span>
                     {req}
@@ -300,7 +300,7 @@ function Vietnam() {
       <div>
         <h3 className="text-3xl font-bold text-orange-900 text-center mb-8">Country Highlights</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          {vietnamData.sections[0].content.highlights.map((item, index) => (
+          {portugalData.sections[0].content.highlights.map((item, index) => (
             <div 
               key={index}
               className="group relative overflow-hidden rounded-2xl aspect-[4/5] cursor-pointer"
@@ -329,8 +329,8 @@ function Vietnam() {
       <div className="relative h-[60vh] sm:h-[70vh] lg:h-screen">
         <div className="absolute inset-0">
           <img 
-            src={vietnamData.intro.image}
-            alt="Vietnam"
+            src={portugalData.intro.image}
+            alt="Portugal"
             className="w-full h-full object-cover"
           />
         </div>
@@ -345,12 +345,12 @@ function Vietnam() {
           transition={{ duration: 1 }}
           className="absolute inset-0 flex flex-col items-center justify-center text-white text-center px-4"
         >
-          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6">{vietnamData.intro.title}</h1>
-          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light mb-8 sm:mb-12">{vietnamData.intro.subtitle}</p>
+          <h1 className="text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6">{portugalData.intro.title}</h1>
+          <p className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-light mb-8 sm:mb-12">{portugalData.intro.subtitle}</p>
           
           {/* Navigation Pills */}
           <div className="flex flex-wrap justify-center gap-3 sm:gap-4 bg-white/10 backdrop-blur-md p-2 rounded-full max-w-full overflow-x-auto">
-            {vietnamData.sections.map((section) => (
+            {portugalData.sections.map((section) => (
               <button
                 key={section.id}
                 onClick={() => setActiveSection(section.id)}
@@ -387,19 +387,19 @@ function Vietnam() {
               {/* Flag and Currency Column */}
               <div className="w-full lg:w-1/3 flex flex-col items-center">
                 <img 
-                  src={vietnamData.intro.flag}
-                  alt="Flag of Vietnam"
+                  src={portugalData.intro.flag}
+                  alt="Flag of Portugal"
                   className="w-48 sm:w-64 h-auto shadow-lg rounded-lg animate-flag-wave"
                 />
                 <div className="mt-6 sm:mt-8 text-center">
-                  <span className="text-4xl sm:text-6xl font-bold text-orange-900 mb-2 block">₫</span>
-                  <span className="text-lg sm:text-xl text-gray-600">1 USD ≈ 23,000 VND</span>
+                  <span className="text-4xl sm:text-6xl font-bold text-orange-900 mb-2 block">€</span>
+                  <span className="text-lg sm:text-xl text-gray-600">1 USD ≈ 0.85 EUR</span>
                 </div>
               </div>
 
               {/* Country Info Grid */}
               <div className="w-full lg:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
-                {Object.entries(vietnamData.intro.basicInfo).map(([key, value]) => (
+                {Object.entries(portugalData.intro.basicInfo).map(([key, value]) => (
                   key !== 'currency' && (
                     <div key={key} className="bg-orange-50 p-6 rounded-xl">
                       <h3 className="text-orange-900 font-semibold capitalize mb-2">
@@ -430,7 +430,7 @@ function Vietnam() {
               >
                 <div className="container mx-auto px-4">
                   <div className="grid grid-cols-1 gap-16">
-                    {vietnamData.sections[1].places.map((place, index) => (
+                    {portugalData.sections[1].places.map((place, index) => (
                       <div 
                         key={index}
                         className="flex flex-col md:flex-row gap-8 items-center"
@@ -470,7 +470,7 @@ function Vietnam() {
                 className="space-y-12 sm:space-y-16"
               >
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-                  {vietnamData.sections.find(s => s.id === 'experience').activities.map((activity, index) => (
+                  {portugalData.sections.find(s => s.id === 'experience').activities.map((activity, index) => (
                     <div 
                       key={index}
                       className="bg-orange-50 rounded-2xl p-8 hover:shadow-xl transition-shadow"
@@ -498,4 +498,4 @@ function Vietnam() {
   );
 }
 
-export default Vietnam;
+export default Portugal;
