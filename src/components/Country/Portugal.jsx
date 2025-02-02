@@ -138,7 +138,7 @@ function Portugal() {
           {
             name: "Porto",
             location: "Northern Portugal",
-            image: "https://images.unsplash.com/photo-1558334466-af6b1b3f4d3b",
+            image: "https://images.unsplash.com/photo-1507501336603-6e31db2be093",
             description: "Historic riverside city known for Port wine",
             tags: ["Wine", "History", "Architecture"]
           },
@@ -152,7 +152,7 @@ function Portugal() {
           {
             name: "Sintra",
             location: "Near Lisbon",
-            image: "https://images.unsplash.com/photo-1559627755-c1b6355a616b",
+            image: "https://images.unsplash.com/photo-1507501336603-6e31db2be093",
             description: "Fairy-tale palaces and mystical gardens",
             tags: ["Castles", "UNESCO", "Nature"]
           }
