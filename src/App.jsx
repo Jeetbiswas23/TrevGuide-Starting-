@@ -20,6 +20,7 @@ import Mexico from './components/Country/Mexixo';
 import Switzerland from './components/Country/Switzerland';
 import Southkorea from './components/Country/Southkorea';
 import Vietnam from './components/Country/Vietnam';
+import Portugal from './components/Country/Portugal';
 
 
 
@@ -473,6 +474,7 @@ function App() {
             <Route path="/country/switzerland" element={<Switzerland />} />
             <Route path="/country/south-korea" element={<Southkorea />} />
             <Route path="/country/vietnam" element={<Vietnam />} />
+            <Route path="/country/portugal" element={<Portugal />} />
 
           </Routes>
         </div>
