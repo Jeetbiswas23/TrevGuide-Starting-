@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 
 function Dashboard({ username, userProfile: initialProfile }) {
@@ -12,6 +12,8 @@ function Dashboard({ username, userProfile: initialProfile }) {
     travelPreferences: JSON.parse(localStorage.getItem('travelPreferences')) || ['Adventure', 'Culture'],
     nextDestination: localStorage.getItem('nextDestination') || 'Planning...'
   });
+  const [profileImage, setProfileImage] = useState(localStorage.getItem('profileImage') || '');
+  const fileInputRef = useRef(null);
 
   const availableTags = [
     'Adventure', 'Culture', 'Food', 'Nature', 'Photography', 'History',
@@ -35,6 +37,18 @@ function Dashboard({ username, userProfile: initialProfile }) {
     }));
   };
 
+  const handleImageUpload = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setProfileImage(reader.result);
+        localStorage.setItem('profileImage', reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-8">
       <div className="container mx-auto px-4">
@@ -54,8 +68,36 @@ function Dashboard({ username, userProfile: initialProfile }) {
           </div>
 
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
-            <div className="w-32 h-32 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-lg">
-              {username?.charAt(0).toUpperCase()}
+            <div className="relative group">
+              {profileImage ? (
+                <img 
+                  src={profileImage} 
+                  alt={username}
+                  className="w-32 h-32 rounded-full object-cover shadow-lg"
+                />
+              ) : (
+                <div className="w-32 h-32 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-lg">
+                  {username?.charAt(0).toUpperCase()}
+                </div>
+              )}
+              
+              {isEditing && (
+                <>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageUpload}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    onClick={() => fileInputRef.current.click()}
+                    className="absolute bottom-0 right-0 bg-orange-500 text-white p-2 rounded-full shadow-lg hover:bg-orange-600 transition-colors"
+                  >
+                    📷
+                  </button>
+                </>
+              )}
             </div>
             <div className="flex-1">
               <div className="flex flex-wrap items-center gap-4 mb-4">
