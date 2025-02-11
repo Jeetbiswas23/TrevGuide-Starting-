@@ -327,7 +327,7 @@ function App() {
               >
                 {/* Navigation Links */}
                 <div className="w-full lg:w-auto space-y-6 lg:space-y-0 lg:space-x-8">
-                  {['Home', 'Countries', 'Contact'].map((item) => (
+                  {['Home', 'Countries', 'Blogs'].map((item) => (
                     <Link
                       key={item}
                       to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
@@ -551,7 +551,7 @@ function App() {
               <div key={index} className="space-y-3 sm:space-y-4 px-2">
                 <h4 className="text-base sm:text-lg font-semibold tracking-wide">{section}</h4>
                 <ul className="space-y-2 sm:space-y-3">
-                  {['About', 'Services', 'Contact'].map((item, i) => (
+                  {['About', 'Services', 'Blogs'].map((item, i) => (
                     <li key={i}>
                       <Link
                         to={`/${item.toLowerCase()}`}
