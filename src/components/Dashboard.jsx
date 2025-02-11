@@ -77,14 +77,8 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
       <div className="container mx-auto px-4">
         {/* Profile Card */}
         <div className="bg-white rounded-3xl shadow-xl p-8 mb-8 hover:shadow-2xl transition-all duration-300">
-          {/* Add logout button */}
-          <div className="flex justify-between mb-4">
-            <button
-              onClick={handleLogout}
-              className="px-6 py-2 rounded-full text-sm font-medium bg-gray-500 text-white hover:bg-gray-600 transition-all"
-            >
-              Logout
-            </button>
+          {/* Replace the flex justify-between with flex justify-end */}
+          <div className="flex justify-end mb-4">
             <button
               onClick={() => isEditing ? handleProfileUpdate() : setIsEditing(true)}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
