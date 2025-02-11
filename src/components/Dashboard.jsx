@@ -49,6 +49,11 @@ function Dashboard({ username, userProfile: initialProfile }) {
     }
   };
 
+  const handleRemoveImage = () => {
+    setProfileImage('');
+    localStorage.removeItem('profileImage');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-8">
       <div className="container mx-auto px-4">
@@ -70,11 +75,22 @@ function Dashboard({ username, userProfile: initialProfile }) {
           <div className="flex flex-col md:flex-row items-center md:items-start gap-8">
             <div className="relative group">
               {profileImage ? (
-                <img 
-                  src={profileImage} 
-                  alt={username}
-                  className="w-32 h-32 rounded-full object-cover shadow-lg"
-                />
+                <div className="relative">
+                  <img 
+                    src={profileImage} 
+                    alt={username}
+                    className="w-32 h-32 rounded-full object-cover shadow-lg"
+                  />
+                  {isEditing && (
+                    <button
+                      onClick={handleRemoveImage}
+                      className="absolute top-0 right-0 bg-red-500 text-white p-2 rounded-full shadow-lg hover:bg-red-600 transition-colors"
+                      title="Remove photo"
+                    >
+                      ❌
+                    </button>
+                  )}
+                </div>
               ) : (
                 <div className="w-32 h-32 bg-gradient-to-br from-orange-400 to-orange-600 rounded-full flex items-center justify-center text-5xl font-bold text-white shadow-lg">
                   {username?.charAt(0).toUpperCase()}
@@ -93,6 +109,7 @@ function Dashboard({ username, userProfile: initialProfile }) {
                   <button
                     onClick={() => fileInputRef.current.click()}
                     className="absolute bottom-0 right-0 bg-orange-500 text-white p-2 rounded-full shadow-lg hover:bg-orange-600 transition-colors"
+                    title="Upload photo"
                   >
                     📷
                   </button>
