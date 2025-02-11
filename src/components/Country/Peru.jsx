@@ -101,17 +101,17 @@ function Peru() {
           },
           highlights: [
             {
-              image: "https://images.unsplash.com/photo-1587595431973-160d0d94add8",
+              image: "https://images.unsplash.com/photo-1461863109726-246fa9598dc3",
               title: "Ancient Ruins",
               description: "Incan archaeological sites"
             },
             {
-              image: "https://images.unsplash.com/photo-1600629835269-9c3aaf76b472",
+              image: "https://images.unsplash.com/photo-1461863109726-246fa9598dc3",
               title: "Rich Culture",
               description: "Vibrant traditions & festivals"
             },
             {
-              image: "https://images.unsplash.com/photo-1583830379747-389528aade56",
+              image: "https://images.unsplash.com/photo-1531968455001-5c5272a41129",
               title: "Diverse Landscapes",
               description: "From Amazon to Andes"
             }
@@ -133,14 +133,14 @@ function Peru() {
           {
             name: "Cusco",
             location: "Andes Mountains",
-            image: "https://images.unsplash.com/photo-1572053675669-f93c08b846e5",
+            image: "https://images.unsplash.com/photo-1587595431973-160d0d94add1",
             description: "Historic capital of Inca Empire",
             tags: ["Culture", "Architecture", "Food"]
           },
           {
             name: "Amazon Rainforest",
             location: "Madre de Dios",
-            image: "https://images.unsplash.com/photo-1628605831391-49839d05e75a",
+            image: "https://images.unsplash.com/photo-1587595431973-160d0d94add1",
             description: "Diverse wildlife and ecosystems",
             tags: ["Nature", "Adventure", "Wildlife"]
           }
