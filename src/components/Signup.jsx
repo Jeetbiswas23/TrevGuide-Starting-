@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import emailjs from '@emailjs/browser';
 
 function Signup({ setUsername }) {
   const navigate = useNavigate();
@@ -68,27 +69,63 @@ function Signup({ setUsername }) {
     }
   };
 
-  const handleSubmit = (e) => {
+  const sendWelcomeEmail = async (userEmail, username) => {
+    try {
+      const templateParams = {
+        to_name: username,
+        to_email: userEmail,  // This will be the user's actual email address
+        reply_to: userEmail,  // Add this to ensure replies go to the user
+        message: `Thank you for joining TrevGuide! Your account has been successfully created with email: ${userEmail}. 
+                 We're excited to have you join our community of travelers.`,
+        subject: "Welcome to TrevGuide - Start Your Journey!",
+      };
+
+      const response = await emailjs.send(
+        'service_b20syee',
+        'template_0zjwijk',
+        templateParams,
+        'PyO7_rbCa9rxa0721'
+      );
+
+      console.log('Welcome email sent successfully to:', userEmail);
+    } catch (error) {
+      console.error('Error sending email:', error);
+      alert(`Could not send welcome email to ${userEmail}. Please check your email address.`);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     
-    const isEmailValid = validateEmail(formData.email);
-    const isPasswordValid = validatePassword(formData.password);
-    
-    if (formData.username && isEmailValid && isPasswordValid && formData.location) {
-      // Save all form data to localStorage
-      Object.entries(formData).forEach(([key, value]) => {
-        localStorage.setItem(key, value);
-      });
-      localStorage.setItem('joinDate', new Date().toLocaleDateString());
-      localStorage.setItem('isAuthenticated', 'true'); // Add this line
+    try {
+      const isEmailValid = validateEmail(formData.email);
+      const isPasswordValid = validatePassword(formData.password);
       
-      setShowPopup(true);
-      setUsername(formData.username);
-      
-      setTimeout(() => {
-        setShowPopup(false);
-        navigate('/dashboard');
-      }, 2000);
+      if (formData.username && isEmailValid && isPasswordValid && formData.location) {
+        // Show loading state
+        setShowPopup(true);
+        
+        // Save to localStorage
+        Object.entries(formData).forEach(([key, value]) => {
+          localStorage.setItem(key, value);
+        });
+        localStorage.setItem('joinDate', new Date().toLocaleDateString());
+        localStorage.setItem('isAuthenticated', 'true');
+        
+        // Send welcome email
+        await sendWelcomeEmail(formData.email, formData.username);
+        
+        // Update username and navigate
+        setUsername(formData.username);
+        
+        setTimeout(() => {
+          setShowPopup(false);
+          navigate('/dashboard');
+        }, 2000);
+      }
+    } catch (error) {
+      console.error('Signup error:', error);
+      // Handle error appropriately
     }
   };
 
