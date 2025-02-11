@@ -23,6 +23,7 @@ import Vietnam from './components/Country/Vietnam';
 import Portugal from './components/Country/Portugal';
 import Peru from './components/Country/Peru';
 import Croatia from './components/Country/Croatia';
+import Blog from './components/Blog';
 
 function ScrollToTop() {
   const location = useLocation();
@@ -475,7 +476,7 @@ function App() {
             <Route path="/country/portugal" element={<Portugal />} />
             <Route path="/country/peru" element={<Peru />} />
             <Route path="/country/croatia" element={<Croatia />} />
-
+            <Route path="/blogs" element={<Blog />} />
           </Routes>
         </div>
       </main>
