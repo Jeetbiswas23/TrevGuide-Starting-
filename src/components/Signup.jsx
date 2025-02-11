@@ -95,6 +95,13 @@ function Signup({ setUsername }) {
     }
   };
 
+  const handleSignUp = () => {
+    // ...existing signup logic...
+    localStorage.setItem('isAuthenticated', 'true');
+    localStorage.setItem('username', formData.username);
+    // ...rest of the logic...
+  };
+
   return (
     <div className="flex flex-col items-center w-full max-w-[1400px] mx-auto py-12">
       {showPopup && (

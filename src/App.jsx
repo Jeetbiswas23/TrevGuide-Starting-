@@ -24,8 +24,6 @@ import Portugal from './components/Country/Portugal';
 import Peru from './components/Country/Peru';
 import Croatia from './components/Country/Croatia';
 
-
-
 function ScrollToTop() {
   const location = useLocation();
   
@@ -447,7 +445,7 @@ function App() {
             <Route 
               path="/dashboard" 
               element={
-                username ? (
+                <ProtectedRoute>
                   <Dashboard 
                     username={username}
                     userProfile={{
@@ -456,9 +454,7 @@ function App() {
                       joinDate: localStorage.getItem('joinDate')
                     }}
                   />
-                ) : (
-                  <Navigate to="/signup" replace />
-                )
+                </ProtectedRoute>
               } 
             />
             <Route path="/country/india" element={<India />} />
@@ -611,5 +607,10 @@ const SocialIcon = ({ href, icon }) => (
     {icon}
   </a>
 );
+
+const ProtectedRoute = ({ children }) => {
+  const isAuthenticated = localStorage.getItem('username');
+  return isAuthenticated ? children : <Navigate to="/signup" />;
+};
 
 export default App;

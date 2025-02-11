@@ -1,7 +1,19 @@
-import React, { useState, useRef } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useRef, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-function Dashboard({ username, userProfile: initialProfile }) {
+function Dashboard({ username: propUsername, userProfile: initialProfile }) {
+  const navigate = useNavigate();
+  const [username, setUsername] = useState(propUsername || localStorage.getItem('username'));
+
+  useEffect(() => {
+    // Check if user data exists in localStorage
+    const storedUsername = localStorage.getItem('username');
+    if (!storedUsername) {
+      setUsername(propUsername);
+      localStorage.setItem('username', propUsername);
+    }
+  }, [propUsername]);
+
   const [activeTab, setActiveTab] = useState('trips');
   const [isEditing, setIsEditing] = useState(false);
   const [userProfile, setUserProfile] = useState({
@@ -54,12 +66,25 @@ function Dashboard({ username, userProfile: initialProfile }) {
     localStorage.removeItem('profileImage');
   };
 
+  // Add logout function
+  const handleLogout = () => {
+    localStorage.clear();
+    navigate('/signup');
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-8">
       <div className="container mx-auto px-4">
         {/* Profile Card */}
         <div className="bg-white rounded-3xl shadow-xl p-8 mb-8 hover:shadow-2xl transition-all duration-300">
-          <div className="flex justify-end mb-4">
+          {/* Add logout button */}
+          <div className="flex justify-between mb-4">
+            <button
+              onClick={handleLogout}
+              className="px-6 py-2 rounded-full text-sm font-medium bg-gray-500 text-white hover:bg-gray-600 transition-all"
+            >
+              Logout
+            </button>
             <button
               onClick={() => isEditing ? handleProfileUpdate() : setIsEditing(true)}
               className={`px-6 py-2 rounded-full text-sm font-medium transition-all ${
