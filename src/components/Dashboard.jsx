@@ -72,6 +72,57 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
     navigate('/signup');
   };
 
+  const [blogs, setBlogs] = useState(JSON.parse(localStorage.getItem('userBlogs')) || []);
+  const [showBlogForm, setShowBlogForm] = useState(false);
+  const [newBlog, setNewBlog] = useState({
+    title: '',
+    destination: '',
+    date: '',
+    content: '',
+    images: [],
+    tags: []
+  });
+
+  // Add this to save blogs to localStorage when they change
+  useEffect(() => {
+    localStorage.setItem('userBlogs', JSON.stringify(blogs));
+  }, [blogs]);
+
+  const handleBlogSubmit = (e) => {
+    e.preventDefault();
+    const blogPost = {
+      ...newBlog,
+      id: Date.now(),
+      author: username,
+      createdAt: new Date().toISOString(),
+      likes: 0,
+      comments: []
+    };
+    
+    setBlogs(prev => [blogPost, ...prev]);
+    setShowBlogForm(false);
+    setNewBlog({ title: '', destination: '', date: '', content: '', images: [], tags: [] });
+  };
+
+  // Rename this handler for blog images
+  const handleBlogImageUpload = (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach(file => {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setNewBlog(prev => ({
+          ...prev,
+          images: [...prev.images, reader.result]
+        }));
+      };
+      reader.readAsDataURL(file);
+    });
+  };
+
+  const deleteBlog = (blogId) => {
+    setBlogs(prev => prev.filter(blog => blog.id !== blogId));
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-8">
       <div className="container mx-auto px-4">
@@ -227,16 +278,140 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
           {/* Tab Content */}
           <div className="p-8">
             {activeTab === 'trips' && (
-              <div className="text-center py-16">
-                <div className="text-6xl mb-4">🗺️</div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">No Trips Planned Yet</h3>
-                <p className="text-gray-600 mb-6">Start planning your next adventure!</p>
-                <Link 
-                  to="/explore" 
-                  className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full hover:bg-orange-600 transition-all"
-                >
-                  Explore Destinations
-                </Link>
+              <div className="p-8">
+                <div className="flex justify-between items-center mb-8">
+                  <h3 className="text-2xl font-bold text-gray-800">My Travel Blogs</h3>
+                  <button
+                    onClick={() => setShowBlogForm(true)}
+                    className="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 transition-all"
+                  >
+                    Create New Blog
+                  </button>
+                </div>
+
+                {showBlogForm && (
+                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+                    <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                      <form onSubmit={handleBlogSubmit} className="space-y-6">
+                        <div>
+                          <label className="block text-lg font-semibold mb-2">Blog Title</label>
+                          <input
+                            type="text"
+                            value={newBlog.title}
+                            onChange={(e) => setNewBlog(prev => ({ ...prev, title: e.target.value }))}
+                            className="w-full p-3 border rounded-xl"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-lg font-semibold mb-2">Destination</label>
+                          <input
+                            type="text"
+                            value={newBlog.destination}
+                            onChange={(e) => setNewBlog(prev => ({ ...prev, destination: e.target.value }))}
+                            className="w-full p-3 border rounded-xl"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-lg font-semibold mb-2">Travel Date</label>
+                          <input
+                            type="date"
+                            value={newBlog.date}
+                            onChange={(e) => setNewBlog(prev => ({ ...prev, date: e.target.value }))}
+                            className="w-full p-3 border rounded-xl"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-lg font-semibold mb-2">Content</label>
+                          <textarea
+                            value={newBlog.content}
+                            onChange={(e) => setNewBlog(prev => ({ ...prev, content: e.target.value }))}
+                            className="w-full p-3 border rounded-xl"
+                            rows="6"
+                            required
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block text-lg font-semibold mb-2">Images</label>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            multiple
+                            onChange={handleBlogImageUpload}
+                            className="w-full p-3 border rounded-xl"
+                          />
+                        </div>
+
+                        <div className="flex justify-end gap-4">
+                          <button
+                            type="button"
+                            onClick={() => setShowBlogForm(false)}
+                            className="px-6 py-2 bg-gray-200 rounded-xl hover:bg-gray-300"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            className="px-6 py-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600"
+                          >
+                            Publish Blog
+                          </button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                )}
+
+                {/* Blog List */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  {blogs.map(blog => (
+                    <div key={blog.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+                      {blog.images.length > 0 && (
+                        <img
+                          src={blog.images[0]}
+                          alt={blog.title}
+                          className="w-full h-48 object-cover"
+                        />
+                      )}
+                      <div className="p-6">
+                        <h4 className="text-xl font-bold mb-2">{blog.title}</h4>
+                        <p className="text-gray-600 mb-4">{blog.destination}</p>
+                        <p className="text-sm text-gray-500 mb-4">
+                          {new Date(blog.createdAt).toLocaleDateString()}
+                        </p>
+                        <p className="text-gray-700 line-clamp-3 mb-4">{blog.content}</p>
+                        <div className="flex justify-between items-center">
+                          <button
+                            onClick={() => {/* Implement view full blog */}}
+                            className="text-orange-500 hover:text-orange-600"
+                          >
+                            Read More
+                          </button>
+                          <button
+                            onClick={() => deleteBlog(blog.id)}
+                            className="text-red-500 hover:text-red-600"
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {blogs.length === 0 && (
+                  <div className="text-center py-16">
+                    <div className="text-6xl mb-4">✍️</div>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">No Blogs Yet</h3>
+                    <p className="text-gray-600 mb-6">Share your travel experiences with others!</p>
+                  </div>
+                )}
               </div>
             )}
 
