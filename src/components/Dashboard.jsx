@@ -80,7 +80,8 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
     date: '',
     content: '',
     images: [],
-    tags: []
+    tags: [],
+    category: 'adventure' // New field
   });
 
   // Add this to save blogs to localStorage when they change
@@ -279,137 +280,138 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
           <div className="p-8">
             {activeTab === 'trips' && (
               <div className="p-8">
-                <div className="flex justify-between items-center mb-8">
-                  <h3 className="text-2xl font-bold text-gray-800">My Travel Blogs</h3>
+                <div className="flex justify-between items-center mb-12">
+                  <h3 className="text-3xl font-bold text-gray-800">Travel Stories</h3>
                   <button
                     onClick={() => setShowBlogForm(true)}
-                    className="bg-orange-500 text-white px-6 py-2 rounded-full hover:bg-orange-600 transition-all"
+                    className="bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-3 rounded-xl 
+                      hover:from-orange-700 hover:to-orange-800 transition-all transform hover:scale-105 
+                      shadow-lg hover:shadow-xl flex items-center space-x-2"
                   >
-                    Create New Blog
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4" />
+                    </svg>
+                    <span>Share Your Story</span>
                   </button>
                 </div>
 
-                {showBlogForm && (
-                  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-                    <div className="bg-white rounded-2xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-                      <form onSubmit={handleBlogSubmit} className="space-y-6">
-                        <div>
-                          <label className="block text-lg font-semibold mb-2">Blog Title</label>
-                          <input
-                            type="text"
-                            value={newBlog.title}
-                            onChange={(e) => setNewBlog(prev => ({ ...prev, title: e.target.value }))}
-                            className="w-full p-3 border rounded-xl"
-                            required
-                          />
-                        </div>
+                {/* Blog Categories */}
+                <div className="flex overflow-x-auto gap-4 mb-8 pb-4 scrollbar-hide">
+                  {['All', 'Adventure', 'Culture', 'Food', 'Nature', 'City Life'].map((category) => (
+                    <button
+                      key={category}
+                      className="px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap
+                        bg-orange-50 text-orange-800 hover:bg-orange-100 transition-colors"
+                    >
+                      {category}
+                    </button>
+                  ))}
+                </div>
 
-                        <div>
-                          <label className="block text-lg font-semibold mb-2">Destination</label>
-                          <input
-                            type="text"
-                            value={newBlog.destination}
-                            onChange={(e) => setNewBlog(prev => ({ ...prev, destination: e.target.value }))}
-                            className="w-full p-3 border rounded-xl"
-                            required
+                {/* Blog Grid */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                  {blogs.map((blog) => (
+                    <div key={blog.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl 
+                      transition-all duration-300 transform hover:-translate-y-1">
+                      {/* Blog Image Container */}
+                      <div className="relative h-48 overflow-hidden">
+                        {blog.images[0] ? (
+                          <img
+                            src={blog.images[0]}
+                            alt={blog.title}
+                            className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-500"
                           />
-                        </div>
-
-                        <div>
-                          <label className="block text-lg font-semibold mb-2">Travel Date</label>
-                          <input
-                            type="date"
-                            value={newBlog.date}
-                            onChange={(e) => setNewBlog(prev => ({ ...prev, date: e.target.value }))}
-                            className="w-full p-3 border rounded-xl"
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-lg font-semibold mb-2">Content</label>
-                          <textarea
-                            value={newBlog.content}
-                            onChange={(e) => setNewBlog(prev => ({ ...prev, content: e.target.value }))}
-                            className="w-full p-3 border rounded-xl"
-                            rows="6"
-                            required
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-lg font-semibold mb-2">Images</label>
-                          <input
-                            type="file"
-                            accept="image/*"
-                            multiple
-                            onChange={handleBlogImageUpload}
-                            className="w-full p-3 border rounded-xl"
-                          />
-                        </div>
-
-                        <div className="flex justify-end gap-4">
-                          <button
-                            type="button"
-                            onClick={() => setShowBlogForm(false)}
-                            className="px-6 py-2 bg-gray-200 rounded-xl hover:bg-gray-300"
-                          >
-                            Cancel
-                          </button>
-                          <button
-                            type="submit"
-                            className="px-6 py-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600"
-                          >
-                            Publish Blog
+                        ) : (
+                          <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-600 flex items-center justify-center">
+                            <svg className="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                          </div>
+                        )}
+                        <div className="absolute top-4 right-4 space-x-2">
+                          <button className="p-2 bg-white/90 backdrop-blur-sm rounded-full shadow-lg 
+                            hover:bg-white transition-colors">
+                            <svg className="w-4 h-4 text-red-500" fill="currentColor" viewBox="0 0 24 24">
+                              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
                           </button>
                         </div>
-                      </form>
-                    </div>
-                  </div>
-                )}
+                      </div>
 
-                {/* Blog List */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  {blogs.map(blog => (
-                    <div key={blog.id} className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
-                      {blog.images.length > 0 && (
-                        <img
-                          src={blog.images[0]}
-                          alt={blog.title}
-                          className="w-full h-48 object-cover"
-                        />
-                      )}
+                      {/* Blog Content */}
                       <div className="p-6">
-                        <h4 className="text-xl font-bold mb-2">{blog.title}</h4>
-                        <p className="text-gray-600 mb-4">{blog.destination}</p>
-                        <p className="text-sm text-gray-500 mb-4">
-                          {new Date(blog.createdAt).toLocaleDateString()}
-                        </p>
-                        <p className="text-gray-700 line-clamp-3 mb-4">{blog.content}</p>
-                        <div className="flex justify-between items-center">
-                          <button
-                            onClick={() => {/* Implement view full blog */}}
-                            className="text-orange-500 hover:text-orange-600"
-                          >
-                            Read More
-                          </button>
-                          <button
-                            onClick={() => deleteBlog(blog.id)}
-                            className="text-red-500 hover:text-red-600"
-                          >
-                            Delete
-                          </button>
+                        <div className="flex items-center gap-4 mb-4">
+                          <div className="flex items-center space-x-2 text-sm text-gray-600">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            <span>{new Date(blog.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                          </div>
+                          <div className="flex items-center space-x-2 text-sm text-gray-600">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span>{blog.destination}</span>
+                          </div>
+                        </div>
+
+                        <h4 className="text-xl font-bold text-gray-900 mb-2 line-clamp-2 group-hover:text-orange-600 
+                          transition-colors">{blog.title}</h4>
+                        <p className="text-gray-600 line-clamp-3 mb-4">{blog.content}</p>
+
+                        {/* Tags */}
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {blog.tags.map((tag, index) => (
+                            <span key={index} className="px-3 py-1 text-xs font-medium bg-orange-50 text-orange-800 
+                              rounded-full">{tag}</span>
+                          ))}
+                        </div>
+
+                        {/* Author and Actions */}
+                        <div className="flex items-center justify-between pt-4 border-t border-gray-100">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-8 h-8 rounded-full bg-gradient-to-r from-orange-400 to-orange-600 
+                              flex items-center justify-center text-white font-medium">
+                              {blog.author[0].toUpperCase()}
+                            </div>
+                            <span className="text-sm font-medium text-gray-700">{blog.author}</span>
+                          </div>
+                          <div className="flex items-center space-x-2">
+                            <button
+                              onClick={() => deleteBlog(blog.id)}
+                              className="p-2 text-gray-400 hover:text-red-500 transition-colors"
+                              title="Delete story"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
 
+                {/* Empty State */}
                 {blogs.length === 0 && (
                   <div className="text-center py-16">
-                    <div className="text-6xl mb-4">✍️</div>
-                    <h3 className="text-2xl font-bold text-gray-800 mb-2">No Blogs Yet</h3>
-                    <p className="text-gray-600 mb-6">Share your travel experiences with others!</p>
+                    <div className="w-24 h-24 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-6">
+                      <svg className="w-12 h-12 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                      </svg>
+                    </div>
+                    <h3 className="text-2xl font-bold text-gray-800 mb-2">Share Your First Story</h3>
+                    <p className="text-gray-600 mb-8">Start documenting your travel adventures</p>
+                    <button
+                      onClick={() => setShowBlogForm(true)}
+                      className="bg-orange-600 text-white px-8 py-3 rounded-xl hover:bg-orange-700 
+                        transition-colors transform hover:scale-105"
+                    >
+                      Create Blog Post
+                    </button>
                   </div>
                 )}
               </div>
