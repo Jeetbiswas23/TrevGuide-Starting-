@@ -91,19 +91,68 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
 
   const handleBlogSubmit = (e) => {
     e.preventDefault();
-    const blogPost = {
-      ...newBlog,
-      id: Date.now(),
-      author: username,
-      createdAt: new Date().toISOString(),
-      likes: 0,
-      comments: []
-    };
     
-    setBlogs(prev => [blogPost, ...prev]);
-    setShowBlogForm(false);
-    setNewBlog({ title: '', destination: '', date: '', content: '', images: [], tags: [] });
+    // Simple validation for required fields
+    if (!newBlog.title || !newBlog.destination || !newBlog.date || !newBlog.content || !newBlog.category) {
+      alert('Please fill in all required fields');
+      return;
+    }
+  
+    try {
+      // Create the blog post object
+      const blogPost = {
+        id: Date.now(),
+        title: newBlog.title,
+        destination: newBlog.destination,
+        category: newBlog.category,
+        date: new Date(newBlog.date).toISOString(),
+        content: newBlog.content,
+        images: newBlog.images,
+        tags: newBlog.tags,
+        author: username,
+        createdAt: new Date().toISOString(),
+        likes: 0,
+        comments: []
+      };
+  
+      // Update state with new blog
+      const updatedBlogs = [blogPost, ...blogs];
+      setBlogs(updatedBlogs);
+  
+      // Save to localStorage
+      localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
+  
+      // Reset form
+      setNewBlog({
+        title: '',
+        destination: '',
+        date: '',
+        content: '',
+        images: [],
+        tags: [],
+        category: ''
+      });
+  
+      // Close modal
+      setShowBlogForm(false);
+    } catch (error) {
+      console.error('Error publishing blog:', error);
+      alert('Failed to publish blog. Please try again.');
+    }
   };
+  
+  // Add this useEffect to load blogs from localStorage on component mount
+  useEffect(() => {
+    const savedBlogs = localStorage.getItem('userBlogs');
+    if (savedBlogs) {
+      try {
+        setBlogs(JSON.parse(savedBlogs));
+      } catch (error) {
+        console.error('Error loading blogs:', error);
+        setBlogs([]);
+      }
+    }
+  }, []);
 
   // Rename this handler for blog images
   const handleBlogImageUpload = (e) => {
@@ -123,6 +172,14 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
   const deleteBlog = (blogId) => {
     setBlogs(prev => prev.filter(blog => blog.id !== blogId));
   };
+
+  // Add state for selected category
+  const [selectedCategory, setSelectedCategory] = useState('All');
+
+  // Add category filter function
+  const filteredBlogs = blogs.filter(blog => 
+    selectedCategory === 'All' || blog.category === selectedCategory.toLowerCase()
+  );
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white py-8">
@@ -300,8 +357,12 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                   {['All', 'Adventure', 'Culture', 'Food', 'Nature', 'City Life'].map((category) => (
                     <button
                       key={category}
-                      className="px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap
-                        bg-orange-50 text-orange-800 hover:bg-orange-100 transition-colors"
+                      onClick={() => setSelectedCategory(category)}
+                      className={`px-6 py-2 rounded-full text-sm font-medium whitespace-nowrap
+                        ${selectedCategory === category 
+                          ? 'bg-orange-500 text-white' 
+                          : 'bg-orange-50 text-orange-800 hover:bg-orange-100'
+                        } transition-colors`}
                     >
                       {category}
                     </button>
@@ -310,7 +371,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
 
                 {/* Blog Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                  {blogs.map((blog) => (
+                  {filteredBlogs.map((blog) => (
                     <div key={blog.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl 
                       transition-all duration-300 transform hover:-translate-y-1">
                       {/* Blog Image Container */}
@@ -466,6 +527,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
           </div>
         </div>
       </div>
+      {/* Blog Form Modal */}
       {showBlogForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
           <div className="bg-white rounded-2xl p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative">
@@ -473,16 +535,15 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
               onClick={() => setShowBlogForm(false)}
               className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
+              ×
             </button>
 
             <h3 className="text-2xl font-bold mb-6">Share Your Travel Story</h3>
 
             <form onSubmit={handleBlogSubmit} className="space-y-6">
+              {/* Title */}
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Title</label>
+                <label className="block text-gray-700 font-medium mb-2">Title *</label>
                 <input
                   type="text"
                   value={newBlog.title}
@@ -493,6 +554,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                 />
               </div>
 
+              {/* Destination */}
               <div>
                 <label className="block text-gray-700 font-medium mb-2">Destination</label>
                 <input
@@ -505,6 +567,25 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                 />
               </div>
 
+              {/* Category */}
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">Category</label>
+                <select
+                  value={newBlog.category}
+                  onChange={(e) => setNewBlog(prev => ({ ...prev, category: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
+                  required
+                >
+                  <option value="">Select a category</option>
+                  <option value="adventure">Adventure</option>
+                  <option value="culture">Culture</option>
+                  <option value="food">Food</option>
+                  <option value="nature">Nature</option>
+                  <option value="city-life">City Life</option>
+                </select>
+              </div>
+
+              {/* Travel Date */}
               <div>
                 <label className="block text-gray-700 font-medium mb-2">Travel Date</label>
                 <input
@@ -516,6 +597,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                 />
               </div>
 
+              {/* Your Story */}
               <div>
                 <label className="block text-gray-700 font-medium mb-2">Your Story</label>
                 <textarea
@@ -528,61 +610,63 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                 />
               </div>
 
+              {/* Add this photo upload section before the submit buttons */}
               <div>
-                <label className="block text-gray-700 font-medium mb-2">Travel Categories</label>
-                <div className="flex flex-wrap gap-2">
-                  {['Adventure', 'Culture', 'Food', 'Nature', 'City Life'].map(tag => (
-                    <button
-                      key={tag}
-                      type="button"
-                      onClick={() => {
-                        setNewBlog(prev => ({
-                          ...prev,
-                          tags: prev.tags.includes(tag)
-                            ? prev.tags.filter(t => t !== tag)
-                            : [...prev.tags, tag]
-                        }))
-                      }}
-                      className={`px-4 py-2 rounded-full text-sm transition-colors ${
-                        newBlog.tags.includes(tag)
-                          ? 'bg-orange-500 text-white'
-                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
-                    >
-                      {tag}
-                    </button>
-                  ))}
-                </div>
-              </div>
+                <label className="block text-gray-700 font-medium mb-2">Cover Photo</label>
+                <div className="space-y-4">
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleBlogImageUpload}
+                    className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
+                  />
+                  
+                  {newBlog.images.length > 0 && (
+                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
+                      {newBlog.images.map((img, index) => (
+                        <div key={index} className="relative group aspect-square">
+                          <img 
+                            src={img} 
+                            alt={`Upload ${index + 1}`} 
+                            className="w-full h-full object-cover rounded-lg"
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setNewBlog(prev => ({
+                              ...prev,
+                              images: prev.images.filter((_, i) => i !== index)
+                            }))}
+                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 
+                              flex items-center justify-center hover:bg-red-600 transition-colors
+                              opacity-0 group-hover:opacity-100"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
 
-              <div>
-                <label className="block text-gray-700 font-medium mb-2">Photos</label>
-                <input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleBlogImageUpload}
-                  className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
-                />
-                {newBlog.images.length > 0 && (
-                  <div className="mt-4 flex gap-4 overflow-x-auto py-2">
-                    {newBlog.images.map((img, index) => (
-                      <div key={index} className="relative w-24 h-24 flex-shrink-0">
-                        <img src={img} alt="" className="w-full h-full object-cover rounded-lg" />
-                        <button
-                          type="button"
-                          onClick={() => setNewBlog(prev => ({
-                            ...prev,
-                            images: prev.images.filter((_, i) => i !== index)
-                          }))}
-                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 w-6 h-6 flex items-center justify-center"
-                        >
-                          ✕
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                  {newBlog.images.length === 0 && (
+                    <div className="text-center py-8 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
+                      <svg 
+                        className="mx-auto h-12 w-12 text-gray-400" 
+                        fill="none" 
+                        stroke="currentColor" 
+                        viewBox="0 0 24 24"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth="2" 
+                          d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
+                        />
+                      </svg>
+                      <p className="mt-2 text-sm text-gray-500">Upload your Cover Photo to enhance your story</p>
+                    </div>
+                  )}
+                </div>
               </div>
 
               <div className="flex justify-end gap-4 pt-4">
