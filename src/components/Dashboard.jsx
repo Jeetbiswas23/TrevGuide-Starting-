@@ -466,6 +466,144 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
           </div>
         </div>
       </div>
+      {showBlogForm && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4 overflow-y-auto">
+          <div className="bg-white rounded-2xl p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto relative">
+            <button
+              onClick={() => setShowBlogForm(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
+            >
+              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            <h3 className="text-2xl font-bold mb-6">Share Your Travel Story</h3>
+
+            <form onSubmit={handleBlogSubmit} className="space-y-6">
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">Title</label>
+                <input
+                  type="text"
+                  value={newBlog.title}
+                  onChange={(e) => setNewBlog(prev => ({ ...prev, title: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
+                  placeholder="Enter your blog title"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">Destination</label>
+                <input
+                  type="text"
+                  value={newBlog.destination}
+                  onChange={(e) => setNewBlog(prev => ({ ...prev, destination: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
+                  placeholder="Where did you go?"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">Travel Date</label>
+                <input
+                  type="date"
+                  value={newBlog.date}
+                  onChange={(e) => setNewBlog(prev => ({ ...prev, date: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">Your Story</label>
+                <textarea
+                  value={newBlog.content}
+                  onChange={(e) => setNewBlog(prev => ({ ...prev, content: e.target.value }))}
+                  className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
+                  rows="6"
+                  placeholder="Tell us about your experience..."
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">Travel Categories</label>
+                <div className="flex flex-wrap gap-2">
+                  {['Adventure', 'Culture', 'Food', 'Nature', 'City Life'].map(tag => (
+                    <button
+                      key={tag}
+                      type="button"
+                      onClick={() => {
+                        setNewBlog(prev => ({
+                          ...prev,
+                          tags: prev.tags.includes(tag)
+                            ? prev.tags.filter(t => t !== tag)
+                            : [...prev.tags, tag]
+                        }))
+                      }}
+                      className={`px-4 py-2 rounded-full text-sm transition-colors ${
+                        newBlog.tags.includes(tag)
+                          ? 'bg-orange-500 text-white'
+                          : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-gray-700 font-medium mb-2">Photos</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={handleBlogImageUpload}
+                  className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
+                />
+                {newBlog.images.length > 0 && (
+                  <div className="mt-4 flex gap-4 overflow-x-auto py-2">
+                    {newBlog.images.map((img, index) => (
+                      <div key={index} className="relative w-24 h-24 flex-shrink-0">
+                        <img src={img} alt="" className="w-full h-full object-cover rounded-lg" />
+                        <button
+                          type="button"
+                          onClick={() => setNewBlog(prev => ({
+                            ...prev,
+                            images: prev.images.filter((_, i) => i !== index)
+                          }))}
+                          className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full p-1 hover:bg-red-600 w-6 h-6 flex items-center justify-center"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <div className="flex justify-end gap-4 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowBlogForm(false)}
+                  className="px-6 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-6 py-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600"
+                >
+                  Publish Story
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
