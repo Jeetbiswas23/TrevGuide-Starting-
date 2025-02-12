@@ -89,40 +89,61 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
     localStorage.setItem('userBlogs', JSON.stringify(blogs));
   }, [blogs]);
 
-  const handleBlogSubmit = (e) => {
+  // Add these state variables near your other state declarations
+  const [publishError, setPublishError] = useState('');
+  const [isPublishing, setIsPublishing] = useState(false);
+
+  // Replace the existing handleBlogSubmit function with this improved version
+  const handleBlogSubmit = async (e) => {
     e.preventDefault();
-    
-    // Simple validation for required fields
-    if (!newBlog.title || !newBlog.destination || !newBlog.date || !newBlog.content || !newBlog.category) {
-      alert('Please fill in all required fields');
-      return;
-    }
+    setPublishError('');
+    setIsPublishing(true);
   
     try {
-      // Create the blog post object
+      // Validate required fields
+      if (!newBlog.title.trim()) throw new Error('Title is required');
+      if (!newBlog.destination.trim()) throw new Error('Destination is required');
+      if (!newBlog.date) throw new Error('Date is required');
+      if (!newBlog.content.trim()) throw new Error('Content is required');
+      if (!newBlog.category) throw new Error('Category is required');
+  
+      // Create blog post object with proper data structure
       const blogPost = {
-        id: Date.now(),
-        title: newBlog.title,
-        destination: newBlog.destination,
+        id: `blog-${Date.now()}`, // Ensure unique ID
+        title: newBlog.title.trim(),
+        destination: newBlog.destination.trim(),
         category: newBlog.category,
         date: new Date(newBlog.date).toISOString(),
-        content: newBlog.content,
-        images: newBlog.images,
-        tags: newBlog.tags,
-        author: username,
+        content: newBlog.content.trim(),
+        images: newBlog.images || [],
+        tags: newBlog.tags || [],
+        author: username || 'Anonymous',
         createdAt: new Date().toISOString(),
         likes: 0,
         comments: []
       };
   
-      // Update state with new blog
-      const updatedBlogs = [blogPost, ...blogs];
-      setBlogs(updatedBlogs);
+      // Get existing blogs from localStorage
+      let existingBlogs = [];
+      try {
+        const savedBlogs = localStorage.getItem('userBlogs');
+        existingBlogs = savedBlogs ? JSON.parse(savedBlogs) : [];
+        if (!Array.isArray(existingBlogs)) existingBlogs = [];
+      } catch (error) {
+        console.error('Error parsing existing blogs:', error);
+        existingBlogs = [];
+      }
+  
+      // Add new blog to the beginning of the array
+      const updatedBlogs = [blogPost, ...existingBlogs];
   
       // Save to localStorage
       localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
   
-      // Reset form
+      // Update state
+      setBlogs(updatedBlogs);
+  
+      // Reset form and close modal
       setNewBlog({
         title: '',
         destination: '',
@@ -132,15 +153,16 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
         tags: [],
         category: ''
       });
-  
-      // Close modal
       setShowBlogForm(false);
+  
     } catch (error) {
+      setPublishError(error.message || 'Failed to publish blog');
       console.error('Error publishing blog:', error);
-      alert('Failed to publish blog. Please try again.');
+    } finally {
+      setIsPublishing(false);
     }
   };
-  
+
   // Add this useEffect to load blogs from localStorage on component mount
   useEffect(() => {
     const savedBlogs = localStorage.getItem('userBlogs');
@@ -540,6 +562,13 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
 
             <h3 className="text-2xl font-bold mb-6">Share Your Travel Story</h3>
 
+            {publishError && (
+              <div className="mb-6 p-4 bg-red-50 border-l-4 border-red-500 text-red-700">
+                <p className="font-medium">Error:</p>
+                <p>{publishError}</p>
+              </div>
+            )}
+
             <form onSubmit={handleBlogSubmit} className="space-y-6">
               {/* Title */}
               <div>
@@ -672,16 +701,32 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
               <div className="flex justify-end gap-4 pt-4">
                 <button
                   type="button"
-                  onClick={() => setShowBlogForm(false)}
+                  onClick={() => {
+                    setShowBlogForm(false);
+                    setPublishError('');
+                  }}
                   className="px-6 py-2 bg-gray-100 text-gray-700 rounded-xl hover:bg-gray-200"
+                  disabled={isPublishing}
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600"
+                  disabled={isPublishing}
+                  className={`px-6 py-2 bg-orange-500 text-white rounded-xl hover:bg-orange-600 
+                    flex items-center gap-2 ${isPublishing ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
-                  Publish Story
+                  {isPublishing ? (
+                    <>
+                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                      </svg>
+                      Publishing...
+                    </>
+                  ) : (
+                    'Publish Story'
+                  )}
                 </button>
               </div>
             </form>
