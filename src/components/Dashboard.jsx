@@ -80,6 +80,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
     date: '',
     content: '',
     images: [],
+    imageUrl: '', // Add this line
     tags: [],
     category: 'adventure' // New field
   });
@@ -93,71 +94,59 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
   const [publishError, setPublishError] = useState('');
   const [isPublishing, setIsPublishing] = useState(false);
 
-  // Replace the existing handleBlogSubmit function with this improved version
+  // Update the handleBlogSubmit function
   const handleBlogSubmit = async (e) => {
     e.preventDefault();
     setPublishError('');
     setIsPublishing(true);
-  
+
     try {
-      // Validate required fields
+      // Basic validation
       if (!newBlog.title.trim()) throw new Error('Title is required');
       if (!newBlog.destination.trim()) throw new Error('Destination is required');
       if (!newBlog.date) throw new Error('Date is required');
       if (!newBlog.content.trim()) throw new Error('Content is required');
       if (!newBlog.category) throw new Error('Category is required');
-  
-      // Create blog post object with proper data structure
+
+      // Format the blog post
       const blogPost = {
-        id: `blog-${Date.now()}`, // Ensure unique ID
+        id: Date.now().toString(),
         title: newBlog.title.trim(),
         destination: newBlog.destination.trim(),
-        category: newBlog.category,
+        category: newBlog.category.toLowerCase(),
         date: new Date(newBlog.date).toISOString(),
         content: newBlog.content.trim(),
-        images: newBlog.images || [],
+        images: newBlog.images, // Ensure images are properly copied
         tags: newBlog.tags || [],
         author: username || 'Anonymous',
         createdAt: new Date().toISOString(),
         likes: 0,
         comments: []
       };
-  
-      // Get existing blogs from localStorage
-      let existingBlogs = [];
-      try {
-        const savedBlogs = localStorage.getItem('userBlogs');
-        existingBlogs = savedBlogs ? JSON.parse(savedBlogs) : [];
-        if (!Array.isArray(existingBlogs)) existingBlogs = [];
-      } catch (error) {
-        console.error('Error parsing existing blogs:', error);
-        existingBlogs = [];
-      }
-  
-      // Add new blog to the beginning of the array
-      const updatedBlogs = [blogPost, ...existingBlogs];
-  
-      // Save to localStorage
-      localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
-  
-      // Update state
+
+      // Update state and localStorage
+      const updatedBlogs = [blogPost, ...blogs];
       setBlogs(updatedBlogs);
-  
-      // Reset form and close modal
+      localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
+
+      // Reset form
       setNewBlog({
         title: '',
         destination: '',
         date: '',
         content: '',
         images: [],
+        imageUrl: '',
         tags: [],
         category: ''
       });
+
       setShowBlogForm(false);
-  
+      setPublishError('');
+
     } catch (error) {
-      setPublishError(error.message || 'Failed to publish blog');
-      console.error('Error publishing blog:', error);
+      console.error('Blog publishing error:', error);
+      setPublishError(error.message);
     } finally {
       setIsPublishing(false);
     }
@@ -176,19 +165,28 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
     }
   }, []);
 
-  // Rename this handler for blog images
+  // Update the handleBlogImageUpload function
   const handleBlogImageUpload = (e) => {
-    const files = Array.from(e.target.files);
-    files.forEach(file => {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewBlog(prev => ({
-          ...prev,
-          images: [...prev.images, reader.result]
-        }));
-      };
-      reader.readAsDataURL(file);
-    });
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setPublishError('Image size should be less than 5MB');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setNewBlog(prev => ({
+        ...prev,
+        imageUrl: reader.result,
+        images: [reader.result] // Store the image in both places
+      }));
+    };
+    reader.onerror = () => {
+      setPublishError('Error reading image file');
+    };
+    reader.readAsDataURL(file);
   };
 
   const deleteBlog = (blogId) => {
@@ -398,7 +396,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                       transition-all duration-300 transform hover:-translate-y-1">
                       {/* Blog Image Container */}
                       <div className="relative h-48 overflow-hidden">
-                        {blog.images[0] ? (
+                        {blog.images && blog.images.length > 0 ? (
                           <img
                             src={blog.images[0]}
                             alt={blog.title}
@@ -646,38 +644,27 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                   <input
                     type="file"
                     accept="image/*"
-                    multiple
                     onChange={handleBlogImageUpload}
                     className="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
                   />
                   
-                  {newBlog.images.length > 0 && (
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
-                      {newBlog.images.map((img, index) => (
-                        <div key={index} className="relative group aspect-square">
-                          <img 
-                            src={img} 
-                            alt={`Upload ${index + 1}`} 
-                            className="w-full h-full object-cover rounded-lg"
-                          />
-                          <button
-                            type="button"
-                            onClick={() => setNewBlog(prev => ({
-                              ...prev,
-                              images: prev.images.filter((_, i) => i !== index)
-                            }))}
-                            className="absolute -top-2 -right-2 bg-red-500 text-white rounded-full w-6 h-6 
-                              flex items-center justify-center hover:bg-red-600 transition-colors
-                              opacity-0 group-hover:opacity-100"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ))}
+                  {newBlog.imageUrl ? (
+                    <div className="relative">
+                      <img 
+                        src={newBlog.imageUrl}
+                        alt="Cover preview"
+                        className="w-full h-48 object-cover rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setNewBlog(prev => ({ ...prev, imageUrl: '', images: [] }))}
+                        className="absolute top-2 right-2 bg-red-500 text-white rounded-full p-2 
+                          hover:bg-red-600 transition-colors"
+                      >
+                        ×
+                      </button>
                     </div>
-                  )}
-
-                  {newBlog.images.length === 0 && (
+                  ) : (
                     <div className="text-center py-8 bg-gray-50 rounded-xl border-2 border-dashed border-gray-200">
                       <svg 
                         className="mx-auto h-12 w-12 text-gray-400" 
@@ -692,7 +679,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                           d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
                         />
                       </svg>
-                      <p className="mt-2 text-sm text-gray-500">Upload your Cover Photo to enhance your story</p>
+                      <p className="mt-2 text-sm text-gray-500">Click to upload your cover photo</p>
                     </div>
                   )}
                 </div>
@@ -717,13 +704,29 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                     flex items-center gap-2 ${isPublishing ? 'opacity-75 cursor-not-allowed' : ''}`}
                 >
                   {isPublishing ? (
-                    <>
-                      <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24">
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" />
-                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                    <div className="flex items-center">
+                      <svg
+                        className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                      >
+                        <circle
+                          className="opacity-25"
+                          cx="12"
+                          cy="12"
+                          r="10"
+                          stroke="currentColor"
+                          strokeWidth="4"
+                        />
+                        <path
+                          className="opacity-75"
+                          fill="currentColor"
+                          d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                        />
                       </svg>
-                      Publishing...
-                    </>
+                      <span>Publishing...</span>
+                    </div>
                   ) : (
                     'Publish Story'
                   )}
