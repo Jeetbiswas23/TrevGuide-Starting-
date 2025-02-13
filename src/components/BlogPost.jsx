@@ -123,153 +123,175 @@ function BlogPost() {
 
   return (
     <div className={`min-h-screen ${getThemeClass()} transition-colors duration-300`}>
-      {/* Reading Progress Bar */}
-      <div className="fixed top-0 left-0 w-full h-1 bg-gray-200 z-50">
+      {/* Reading Progress Bar - Make it smoother */}
+      <div className="fixed top-0 left-0 w-full h-1.5 bg-gray-200/30 backdrop-blur-sm z-50">
         <div 
-          className="h-full bg-orange-500 transition-all duration-200"
+          className="h-full bg-gradient-to-r from-orange-500 to-orange-600 transition-all duration-300 ease-out"
           style={{ width: `${readingProgress}%` }}
         />
       </div>
 
-      {/* Hero Section */}
-      <div className="relative h-[60vh]">
+      {/* Enhanced Hero Section with Parallax Effect */}
+      <div className="relative h-[70vh] overflow-hidden">
         {blog.images && blog.images[0] ? (
-          <img
-            src={blog.images[0]}
-            alt={blog.title}
-            className="w-full h-full object-cover"
+          <div 
+            className="absolute inset-0 scale-110 transform transition-transform duration-500"
+            style={{
+              backgroundImage: `url(${blog.images[0]})`,
+              backgroundPosition: 'center',
+              backgroundSize: 'cover',
+              transform: `translateY(${readingProgress * 0.3}px)`
+            }}
           />
         ) : (
-          <div className="w-full h-full bg-gradient-to-br from-orange-400 to-orange-600" />
+          <div className="absolute inset-0 bg-gradient-to-br from-orange-400 via-orange-500 to-orange-600" />
         )}
-        <div className="absolute inset-0 bg-black/40" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white px-4">
-            <h1 className="text-4xl md:text-5xl font-bold mb-4">{blog.title}</h1>
-            <p className="text-xl text-orange-200">{blog.destination}</p>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/40 to-black/60" />
+        <div className="absolute inset-0 flex items-center justify-center p-6">
+          <div className="text-center max-w-4xl mx-auto">
+            <h1 className="text-4xl md:text-6xl font-bold text-white mb-6 leading-tight">{blog.title}</h1>
+            <p className="text-xl md:text-2xl text-orange-200 font-light">{blog.destination}</p>
           </div>
         </div>
       </div>
 
-      {/* Reading Controls */}
-      <div className="fixed right-4 top-1/2 transform -translate-y-1/2 z-40">
-        <button
-          onClick={() => setShowControls(!showControls)}
-          className="p-3 bg-white/90 rounded-full shadow-lg hover:bg-white transition-all"
-        >
-          <svg className="w-6 h-6 text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
-          </svg>
-        </button>
+      {/* Reading Controls - Enhanced Floating Panel */}
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40">
+        <div className="flex flex-col gap-4">
+          <button
+            onClick={() => setShowControls(!showControls)}
+            className="p-4 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl 
+              hover:bg-white transition-all duration-300 group"
+          >
+            <svg className="w-6 h-6 text-gray-700 group-hover:text-orange-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4" />
+            </svg>
+          </button>
 
-        {showControls && (
-          <div className="absolute right-0 mt-2 p-4 bg-white rounded-xl shadow-xl space-y-4 min-w-[200px]">
-            {/* Font Size Controls */}
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-700">Font Size</p>
-              <div className="flex gap-2">
-                {['sm', 'base', 'lg', 'xl'].map((size) => (
-                  <button
-                    key={size}
-                    onClick={() => setFontSize(size)}
-                    className={`p-2 rounded ${
-                      fontSize === size ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    {size.toUpperCase()}
-                  </button>
-                ))}
+          {showControls && (
+            <div className="absolute right-0 mt-2 p-6 bg-white/95 backdrop-blur-sm rounded-xl 
+              shadow-xl space-y-6 min-w-[240px] animate-fadeIn">
+              {/* Enhanced controls UI */}
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-700">Font Size</p>
+                <div className="flex gap-2">
+                  {['sm', 'base', 'lg', 'xl'].map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setFontSize(size)}
+                      className={`p-2 rounded ${
+                        fontSize === size ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700'
+                      }`}
+                    >
+                      {size.toUpperCase()}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Theme Controls */}
+              <div className="space-y-2">
+                <p className="text-sm font-medium text-gray-700">Theme</p>
+                <div className="flex gap-2">
+                  {[
+                    { name: 'light', icon: '☀️' },
+                    { name: 'sepia', icon: '📜' },
+                    { name: 'dark', icon: '🌙' }
+                  ].map(({ name, icon }) => (
+                    <button
+                      key={name}
+                      onClick={() => setTheme(name)}
+                      className={`p-2 rounded ${
+                        theme === name ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700'
+                      }`}
+                    >
+                      {icon}
+                    </button>
+                  ))}
+                </div>
               </div>
             </div>
-
-            {/* Theme Controls */}
-            <div className="space-y-2">
-              <p className="text-sm font-medium text-gray-700">Theme</p>
-              <div className="flex gap-2">
-                {[
-                  { name: 'light', icon: '☀️' },
-                  { name: 'sepia', icon: '📜' },
-                  { name: 'dark', icon: '🌙' }
-                ].map(({ name, icon }) => (
-                  <button
-                    key={name}
-                    onClick={() => setTheme(name)}
-                    className={`p-2 rounded ${
-                      theme === name ? 'bg-orange-500 text-white' : 'bg-gray-100 text-gray-700'
-                    }`}
-                  >
-                    {icon}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
 
       <div className="max-w-4xl mx-auto px-4 py-12" ref={articleRef}>
-        {/* Article Meta */}
-        <div className="flex items-center justify-between mb-8 border-b pb-6">
-          <div className="flex items-center space-x-4">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-r from-orange-400 to-orange-600 
-              flex items-center justify-center text-white text-xl font-bold">
-              {blog.author[0].toUpperCase()}
+        {/* Enhanced Article Meta Section */}
+        <div className="flex flex-wrap items-center justify-between mb-12 pb-6 border-b border-gray-200/80">
+          <div className="flex items-center space-x-6">
+            <div className="relative group">
+              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-orange-400 to-orange-600 
+                flex items-center justify-center text-2xl font-bold text-white transform 
+                group-hover:scale-110 transition-all duration-300">
+                {blog.author[0].toUpperCase()}
+              </div>
+              <div className="absolute -bottom-1 -right-1 w-6 h-6 bg-green-500 rounded-full 
+                border-2 border-white flex items-center justify-center">
+                <span className="text-white text-xs">✓</span>
+              </div>
             </div>
             <div>
-              <p className="font-medium text-gray-900">{blog.author}</p>
-              <p className="text-sm text-gray-500">
-                {new Date(blog.date).toLocaleDateString('en-US', {
+              <p className="font-bold text-xl text-gray-900 mb-1">{blog.author}</p>
+              <p className="text-sm text-gray-500 flex items-center gap-2">
+                <span>{new Date(blog.date).toLocaleDateString('en-US', {
                   month: 'long',
                   day: 'numeric',
                   year: 'numeric'
-                })}
+                })}</span>
+                •
+                <span className="flex items-center gap-1">
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  {calculateReadingTime(blog.content)} min read
+                </span>
               </p>
             </div>
           </div>
-          <div className="flex items-center gap-2 text-gray-500">
-            <span className="flex items-center gap-1">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              {calculateReadingTime(blog.content)} min read
-            </span>
-          </div>
-          <div className="flex items-center gap-4">
+
+          {/* Enhanced Action Buttons */}
+          <div className="flex items-center gap-4 mt-4 sm:mt-0">
             <button
               onClick={() => navigate(`/edit-blog/${blog.id}`)}
-              className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600 transition-colors"
+              className="px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 
+                transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg 
+                flex items-center gap-2"
             >
-              Edit Story
-            </button>
-            <button
-              onClick={() => navigate('/dashboard')}
-              className="px-4 py-2 text-gray-600 hover:text-orange-600 transition-colors"
-            >
-              ← Back
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+              </svg>
+              <span>Edit Story</span>
             </button>
           </div>
         </div>
 
-        {/* Share Options */}
-        <div className="fixed left-4 top-1/2 transform -translate-y-1/2 space-y-4 hidden md:block">
+        {/* Enhanced Share Options */}
+        <div className="fixed left-6 top-1/2 transform -translate-y-1/2 space-y-4 hidden md:flex md:flex-col">
           {['twitter', 'facebook', 'linkedin', 'copy'].map((platform) => (
             <button
               key={platform}
-              className="p-3 bg-white/90 rounded-full shadow-lg hover:bg-white transition-all"
+              className="p-4 bg-white/90 backdrop-blur-sm rounded-xl shadow-lg hover:shadow-xl 
+                hover:bg-white transition-all duration-300 group transform hover:-translate-y-1"
               onClick={() => {
-                // Implement sharing logic here
                 if (platform === 'copy') {
                   navigator.clipboard.writeText(window.location.href);
                 }
               }}
             >
+              {/* Enhanced share icons */}
               {platform === 'copy' ? '📋' : platform[0].toUpperCase()}
             </button>
           ))}
         </div>
 
-        {/* Main Content */}
-        <article className={`prose prose-lg max-w-none ${getFontSizeClass()}`}>
+        {/* Main Content with Enhanced Typography */}
+        <article className={`prose prose-lg max-w-none ${getFontSizeClass()} 
+          prose-headings:text-gray-900 prose-p:text-gray-700 prose-a:text-orange-600 
+          prose-strong:text-gray-900 prose-blockquote:border-orange-500 
+          prose-blockquote:bg-orange-50 prose-blockquote:py-2 prose-blockquote:px-4 
+          prose-blockquote:rounded-r-lg`}>
           <p className="whitespace-pre-wrap leading-relaxed">
             {blog.content}
           </p>
