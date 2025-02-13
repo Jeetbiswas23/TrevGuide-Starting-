@@ -24,6 +24,8 @@ import Portugal from './components/Country/Portugal';
 import Peru from './components/Country/Peru';
 import Croatia from './components/Country/Croatia';
 import Blog from './components/Blog';
+import BlogEditor from './components/BlogEditor';
+import BlogPost from './components/BlogPost';
 
 function ScrollToTop() {
   const location = useLocation();
@@ -477,6 +479,23 @@ function App() {
             <Route path="/country/peru" element={<Peru />} />
             <Route path="/country/croatia" element={<Croatia />} />
             <Route path="/blogs" element={<Blog />} />
+            <Route path="/create-blog" element={<BlogEditor />} />
+            <Route 
+              path="/blog/:id" 
+              element={
+                <ProtectedRoute>
+                  <BlogPost />
+                </ProtectedRoute>
+              } 
+            />
+            <Route 
+              path="/edit-blog/:id" 
+              element={
+                <ProtectedRoute>
+                  <BlogEditor />
+                </ProtectedRoute>
+              } 
+            />
           </Routes>
         </div>
       </main>

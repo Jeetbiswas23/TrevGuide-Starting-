@@ -405,7 +405,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                 <div className="flex justify-between items-center mb-12">
                   <h3 className="text-3xl font-bold text-gray-800">Travel Stories</h3>
                   <button
-                    onClick={() => setShowBlogForm(true)}
+                    onClick={() => navigate('/create-blog')}
                     className="bg-gradient-to-r from-orange-600 to-orange-700 text-white px-6 py-3 rounded-xl 
                       hover:from-orange-700 hover:to-orange-800 transition-all transform hover:scale-105 
                       shadow-lg hover:shadow-xl flex items-center space-x-2"
@@ -437,9 +437,16 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                 {/* Blog Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                   {filteredBlogs.map((blog) => (
-                    <div key={blog.id} className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl 
-                      transition-all duration-300 transform hover:-translate-y-1">
-                      {/* Blog Image Container */}
+                    <div key={blog.id} 
+                      className="group bg-white rounded-2xl overflow-hidden shadow-lg hover:shadow-2xl 
+                        transition-all duration-300 transform hover:-translate-y-1 cursor-pointer"
+                      onClick={(e) => {
+                        // Prevent navigation if clicking delete button
+                        if (e.target.closest('button')) return;
+                        navigate(`/blog/${blog.id}`);
+                      }}
+                    >
+                      {/* Rest of the blog card content remains the same */}
                       <div className="relative h-48 overflow-hidden">
                         {blog.images && blog.images.length > 0 ? (
                           <img
