@@ -39,7 +39,7 @@ function ScrollToTop() {
 
 function Home({ popularPlaces, testimonials, travelTips }) {
   return (
-    <>
+    <div className="w-full"> {/* Add a wrapper div */}
       {/* Hero Section */}
       <div className="relative">
         <img 
@@ -130,28 +130,7 @@ function Home({ popularPlaces, testimonials, travelTips }) {
           </div>
         </div>
       </div>
-
-      {/* Newsletter Section */}
-      <div className="py-16 bg-gradient-to-r from-orange-100 to-orange-200">
-        <div className="container mx-auto px-4 text-center">
-          <h3 className="text-4xl font-bold mb-4">Stay Updated</h3>
-          <p className="text-xl text-gray-600 mb-8">Get travel tips and exclusive offers straight to your inbox</p>
-          <form className="max-w-2xl mx-auto flex gap-4">
-            <input
-              type="email"
-              placeholder="Enter your email"
-              className="flex-1 px-6 py-4 rounded-xl border-2 border-orange-300 focus:ring-4 focus:ring-orange-200 focus:border-orange-500 focus:outline-none"
-            />
-            <button
-              type="submit"
-              className="bg-orange-900 text-white px-8 py-4 rounded-xl hover:bg-orange-800 transition-colors font-semibold"
-            >
-              Subscribe
-            </button>
-          </form>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }
 
