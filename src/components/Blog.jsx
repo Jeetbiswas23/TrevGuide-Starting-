@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';  // Add this import
 
 function Blog() {
   const [blogs, setBlogs] = useState([]);
@@ -38,6 +39,8 @@ function Blog() {
     { name: '🎭 Culture', count: 145 },
     { name: '🌆 City Life', count: 178 }
   ]);
+
+  const navigate = useNavigate();  // Add this hook
 
   useEffect(() => {
     const savedBlogs = localStorage.getItem('userBlogs');
@@ -95,8 +98,12 @@ function Blog() {
             <h2 className="text-2xl font-bold mb-8">Latest Stories</h2>
             <div className="space-y-8">
               {filteredBlogs.map((blog) => (
-                <article key={blog.id} className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl 
-                  transition-all duration-300">
+                <article 
+                  key={blog.id} 
+                  onClick={() => navigate(`/blog/${blog.id}`)} // Add this onClick handler
+                  className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl 
+                    transition-all duration-300 cursor-pointer"
+                >
                   <div className="md:flex">
                     {/* Blog Image */}
                     <div className="md:w-48 md:h-48 lg:w-64 lg:h-64 flex-shrink-0">
