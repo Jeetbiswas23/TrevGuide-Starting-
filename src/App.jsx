@@ -629,3 +629,59 @@ const ProtectedRoute = ({ children }) => {
 };
 
 export default App;
+
+
+// trevguide/
+// ├── public/
+// │   ├── index.html
+// │   └── assets/
+// │       └── images/
+// ├── src/
+// │   ├── components/
+// │   │   ├── Blog.jsx
+// │   │   ├── BlogEditor.jsx
+// │   │   ├── BlogPost.jsx
+// │   │   ├── Countries.jsx
+// │   │   ├── Country/
+// │   │   │   ├── Brazil.jsx
+// │   │   │   ├── Croatia.jsx
+// │   │   │   ├── Egypt.jsx
+// │   │   │   ├── France.jsx
+// │   │   │   ├── Greece.jsx
+// │   │   │   ├── India.jsx
+// │   │   │   ├── Italy.jsx
+// │   │   │   ├── Japan.jsx
+// │   │   │   ├── Mexico.jsx
+// │   │   │   ├── Morocco.jsx
+// │   │   │   ├── NewZealand.jsx
+// │   │   │   ├── Peru.jsx
+// │   │   │   ├── Portugal.jsx
+// │   │   │   ├── SouthKorea.jsx
+// │   │   │   ├── Spain.jsx
+// │   │   │   ├── Switzerland.jsx
+// │   │   │   ├── Thailand.jsx
+// │   │   │   ├── Vietnam.jsx
+// │   │   ├── Dashboard.jsx
+// │   │   ├── Home.jsx
+// │   │   ├── LoadingScreen.jsx
+// │   │   ├── Poll.jsx
+// │   │   ├── SharePhotos.jsx
+// │   │   ├── Signup.jsx
+// │   │   ├── SocialIcon.jsx
+// │   │   ├── ScrollToTop.jsx
+// │   │   ├── ProtectedRoute.jsx
+// │   ├── data/
+// │   │   ├── siteData.js
+// │   ├── hooks/
+// │   │   ├── useAuth.js
+// │   │   ├── useLocalStorage.js
+// │   ├── styles/
+// │   │   ├── index.css
+// │   ├── App.jsx
+// │   ├── index.jsx
+// │   ├── routes/
+// │   │   ├── Routes.jsx
+// ├── .gitignore
+// ├── package.json
+// ├── README.md
+// └── tailwind.config.js
