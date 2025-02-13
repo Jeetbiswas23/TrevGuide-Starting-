@@ -15,6 +15,7 @@ function BlogPost() {
   const [showNotes, setShowNotes] = useState(false);
   const [note, setNote] = useState('');
   const [notes, setNotes] = useState([]);
+  const controlsRef = useRef(null);
 
   useEffect(() => {
     const blogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
@@ -58,6 +59,17 @@ function BlogPost() {
       setNotes(JSON.parse(savedNotes));
     }
   }, [id]);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (controlsRef.current && !controlsRef.current.contains(event.target)) {
+        setShowControls(false);
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const handleSaveNote = () => {
     if (!note.trim()) return;
@@ -156,7 +168,7 @@ function BlogPost() {
       </div>
 
       {/* Reading Controls - Enhanced Floating Panel */}
-      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40">
+      <div className="fixed right-6 top-1/2 transform -translate-y-1/2 z-40" ref={controlsRef}>
         <div className="flex flex-col gap-4">
           <button
             onClick={() => setShowControls(!showControls)}
