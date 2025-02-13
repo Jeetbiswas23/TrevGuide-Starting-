@@ -539,7 +539,7 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
                     <h3 className="text-2xl font-bold text-gray-800 mb-2">Share Your First Story</h3>
                     <p className="text-gray-600 mb-8">Start documenting your travel adventures</p>
                     <button
-                      onClick={() => setShowBlogForm(true)}
+                      onClick={() => navigate('/create-blog')}
                       className="bg-orange-600 text-white px-8 py-3 rounded-xl hover:bg-orange-700 
                         transition-colors transform hover:scale-105"
                     >
