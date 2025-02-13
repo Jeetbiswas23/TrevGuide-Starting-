@@ -85,6 +85,49 @@ function BlogPost() {
           </p>
         </article>
 
+        {/* Add this new section for additional media */}
+        <div className="mt-12">
+          {/* Additional Photos */}
+          {blog.photos && blog.photos.length > 0 && (
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Photo Gallery</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {blog.photos.map((photo, index) => (
+                  <div key={index} className="relative group rounded-xl overflow-hidden">
+                    <img
+                      src={photo}
+                      alt={`Travel photo ${index + 1}`}
+                      className="w-full h-64 object-cover transform group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity" />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Videos */}
+          {blog.videos && blog.videos.length > 0 && (
+            <div className="mb-12">
+              <h3 className="text-2xl font-bold text-gray-900 mb-6">Videos</h3>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                {blog.videos.map((video, index) => (
+                  <div key={index} className="rounded-xl overflow-hidden shadow-lg">
+                    <video
+                      src={video}
+                      controls
+                      className="w-full h-auto"
+                      poster={blog.images?.[0]} // Use cover image as video poster
+                    >
+                      Your browser does not support the video tag.
+                    </video>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
         {blog.tags && blog.tags.length > 0 && (
           <div className="mt-12 pt-6 border-t">
             <div className="flex flex-wrap gap-2">
