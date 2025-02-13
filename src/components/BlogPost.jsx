@@ -1,9 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, useLocation } from 'react-router-dom'; // Add useLocation
 
 function BlogPost() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [currentUser] = useState(localStorage.getItem('username'));
+  const [isAuthor, setIsAuthor] = useState(false);
   const [blog, setBlog] = useState(null);
   const [selectedPhoto, setSelectedPhoto] = useState(null);
   const [showPhotoModal, setShowPhotoModal] = useState(false);
@@ -22,10 +25,12 @@ function BlogPost() {
     const foundBlog = blogs.find(b => b.id === id);
     if (foundBlog) {
       setBlog(foundBlog);
+      // Check if current user is the author
+      setIsAuthor(foundBlog.author === currentUser);
     } else {
       navigate('/dashboard');
     }
-  }, [id, navigate]);
+  }, [id, navigate, currentUser]);
 
   // Calculate reading time
   const calculateReadingTime = (text) => {
@@ -262,19 +267,27 @@ function BlogPost() {
             </div>
           </div>
 
-          {/* Enhanced Action Buttons */}
+          {/* Enhanced Action Buttons - Only show Edit button if user is author */}
           <div className="flex items-center gap-4 mt-4 sm:mt-0">
+            {isAuthor && (
+              <button
+                onClick={() => navigate(`/edit-blog/${blog.id}`)}
+                className="px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 
+                  transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg 
+                  flex items-center gap-2"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                </svg>
+                <span>Edit Story</span>
+              </button>
+            )}
             <button
-              onClick={() => navigate(`/edit-blog/${blog.id}`)}
-              className="px-6 py-3 bg-orange-500 text-white rounded-xl hover:bg-orange-600 
-                transition-all duration-300 transform hover:-translate-y-1 hover:shadow-lg 
-                flex items-center gap-2"
+              onClick={() => navigate('/dashboard')}
+              className="px-4 py-2 text-gray-600 hover:text-orange-600 transition-colors"
             >
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
-                  d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-              </svg>
-              <span>Edit Story</span>
+              ← Back
             </button>
           </div>
         </div>

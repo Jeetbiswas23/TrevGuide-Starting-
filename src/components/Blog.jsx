@@ -41,6 +41,7 @@ function Blog() {
   ]);
 
   const navigate = useNavigate();  // Add this hook
+  const [currentUser] = useState(localStorage.getItem('username')); // Add this line
 
   useEffect(() => {
     const savedBlogs = localStorage.getItem('userBlogs');
@@ -100,7 +101,9 @@ function Blog() {
               {filteredBlogs.map((blog) => (
                 <article 
                   key={blog.id} 
-                  onClick={() => navigate(`/blog/${blog.id}`)} // Add this onClick handler
+                  onClick={() => navigate(`/blog/${blog.id}`, { 
+                    state: { isAuthor: blog.author === currentUser }  // Pass isAuthor state
+                  })}
                   className="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl 
                     transition-all duration-300 cursor-pointer"
                 >
