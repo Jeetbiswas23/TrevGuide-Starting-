@@ -12,6 +12,9 @@ function BlogPost() {
   const [theme, setTheme] = useState('light'); // light, sepia, dark
   const [showControls, setShowControls] = useState(false);
   const articleRef = useRef(null);
+  const [showNotes, setShowNotes] = useState(false);
+  const [note, setNote] = useState('');
+  const [notes, setNotes] = useState([]);
 
   useEffect(() => {
     const blogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
@@ -48,6 +51,28 @@ function BlogPost() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    const savedNotes = localStorage.getItem(`blog-notes-${id}`);
+    if (savedNotes) {
+      setNotes(JSON.parse(savedNotes));
+    }
+  }, [id]);
+
+  const handleSaveNote = () => {
+    if (!note.trim()) return;
+    
+    const newNote = {
+      id: Date.now(),
+      text: note,
+      date: new Date().toISOString()
+    };
+    
+    const updatedNotes = [...notes, newNote];
+    setNotes(updatedNotes);
+    localStorage.setItem(`blog-notes-${id}`, JSON.stringify(updatedNotes));
+    setNote('');
+  };
 
   const getFontSizeClass = () => {
     switch (fontSize) {
@@ -230,6 +255,55 @@ function BlogPost() {
 
         {/* Add this new section for additional media */}
         <div className="mt-12">
+          {/* Notes Section */}
+          <div className="mt-8 mb-12">
+            <button
+              onClick={() => setShowNotes(!showNotes)}
+              className="flex items-center gap-2 text-orange-600 hover:text-orange-700"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                  d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                  d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z" />
+              </svg>
+              <span>{showNotes ? 'Hide Notes' : 'Show Notes'}</span>
+            </button>
+
+            {showNotes && (
+              <div className="mt-4 space-y-4">
+                <div className="flex gap-2">
+                  <input
+                    type="text"
+                    value={note}
+                    onChange={(e) => setNote(e.target.value)}
+                    placeholder="Add a note..."
+                    className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-orange-200 focus:border-orange-500"
+                  />
+                  <button
+                    onClick={handleSaveNote}
+                    className="px-4 py-2 bg-orange-500 text-white rounded-lg hover:bg-orange-600"
+                  >
+                    Save Note
+                  </button>
+                </div>
+
+                {notes.length > 0 && (
+                  <div className="space-y-3">
+                    {notes.map(note => (
+                      <div key={note.id} className="p-4 bg-orange-50 rounded-lg">
+                        <p className="text-gray-800">{note.text}</p>
+                        <p className="text-sm text-gray-500 mt-2">
+                          {new Date(note.date).toLocaleDateString()}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
           {/* Additional Photos */}
           {blog.photos && blog.photos.length > 0 && (
             <div className="mb-12">
