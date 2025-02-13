@@ -1,11 +1,52 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
+// Add these helper functions at the top
+const compressImage = async (imageUrl, maxSizeKB = 500) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      // Calculate new dimensions while maintaining aspect ratio
+      const maxDimension = 800;
+      if (width > maxDimension || height > maxDimension) {
+        const ratio = Math.min(maxDimension / width, maxDimension / height);
+        width *= ratio;
+        height *= ratio;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // Start with lower quality for better compression
+      let quality = 0.6;
+      let compressedUrl = canvas.toDataURL('image/jpeg', quality);
+      
+      while (compressedUrl.length > maxSizeKB * 1024 && quality > 0.1) {
+        quality -= 0.1;
+        compressedUrl = canvas.toDataURL('image/jpeg', quality);
+      }
+      
+      resolve(compressedUrl);
+    };
+    img.src = imageUrl;
+  });
+};
+
 function BlogEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishError, setPublishError] = useState('');
+  const [mediaFiles, setMediaFiles] = useState({
+    photos: [],
+    videos: []
+  });
   const [blog, setBlog] = useState({
     title: '',
     destination: '',
@@ -14,7 +55,9 @@ function BlogEditor() {
     images: [],
     imageUrl: '',
     tags: [],
-    category: 'adventure'
+    category: 'adventure',
+    photos: [],
+    videos: []
   });
 
   const categories = [
@@ -45,27 +88,86 @@ function BlogEditor() {
     }
   }, [id]);
 
-  const handleImageUpload = (e) => {
+  // Modify image upload handlers
+  const handleImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setBlog(prev => ({
-        ...prev,
-        imageUrl: reader.result,
-        images: [reader.result]
-      }));
-    };
-    reader.readAsDataURL(file);
+    try {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const compressedImage = await compressImage(reader.result);
+        setBlog(prev => ({
+          ...prev,
+          imageUrl: compressedImage,
+          images: [compressedImage]
+        }));
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      setPublishError('Error processing image. Please try a smaller image.');
+    }
   };
 
+  const handleMultiplePhotos = async (e) => {
+    const files = Array.from(e.target.files);
+    for (const file of files) {
+      if (mediaFiles.photos.length >= 10) break;
+      
+      if (file.type.startsWith('image/')) {
+        try {
+          const reader = new FileReader();
+          reader.onloadend = async () => {
+            const compressedImage = await compressImage(reader.result);
+            setMediaFiles(prev => ({
+              ...prev,
+              photos: [...prev.photos, { url: compressedImage, file }]
+            }));
+          };
+          reader.readAsDataURL(file);
+        } catch (error) {
+          console.error('Error processing image:', error);
+        }
+      }
+    }
+  };
+
+  const handleVideoUpload = (e) => {
+    const files = Array.from(e.target.files);
+    files.forEach(file => {
+      if (file.type.startsWith('video/')) {
+        const reader = new FileReader();
+        reader.onloadend = () => {
+          setMediaFiles(prev => ({
+            ...prev,
+            videos: [...prev.videos, { url: reader.result, file }]
+          }));
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+  };
+
+  const removeMedia = (type, index) => {
+    setMediaFiles(prev => ({
+      ...prev,
+      [type]: prev[type].filter((_, i) => i !== index)
+    }));
+  };
+
+  // Modify handleSubmit
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsPublishing(true);
     setPublishError('');
 
     try {
+      // Compress all images before saving
+      const compressedCoverImage = blog.imageUrl ? await compressImage(blog.imageUrl) : '';
+      const compressedPhotos = await Promise.all(
+        mediaFiles.photos.map(photo => compressImage(photo.url))
+      );
+
       const username = localStorage.getItem('username');
       const blogPost = {
         id: id || Date.now().toString(),
@@ -74,7 +176,11 @@ function BlogEditor() {
         createdAt: id ? blog.createdAt : new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         likes: blog.likes || 0,
-        comments: blog.comments || []
+        comments: blog.comments || [],
+        imageUrl: compressedCoverImage,
+        images: [compressedCoverImage],
+        photos: compressedPhotos,
+        videos: mediaFiles.videos.slice(0, 2).map(video => video.url) // Limit to 2 videos
       };
 
       // Get existing blogs
@@ -91,10 +197,36 @@ function BlogEditor() {
         updatedBlogs = [blogPost, ...existingBlogs];
       }
       
-      localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
+      try {
+        // Try to save all blogs
+        localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
+      } catch (storageError) {
+        // If storage fails, try these steps:
+        // 1. Remove oldest blogs until it fits
+        while (updatedBlogs.length > 1) {
+          updatedBlogs.pop(); // Remove oldest blog
+          try {
+            localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
+            break;
+          } catch (e) {
+            continue;
+          }
+        }
+
+        // 2. If still fails, try saving just the new blog
+        if (updatedBlogs.length === 1) {
+          try {
+            localStorage.setItem('userBlogs', JSON.stringify([blogPost]));
+          } catch (finalError) {
+            throw new Error('Storage full. Try reducing image sizes or removing some content.');
+          }
+        }
+      }
+
       navigate('/dashboard');
     } catch (error) {
       setPublishError(error.message);
+      console.error('Blog publishing error:', error);
     } finally {
       setIsPublishing(false);
     }
@@ -197,6 +329,123 @@ function BlogEditor() {
                   className="w-full min-h-[400px] text-lg border-none focus:outline-none focus:ring-0 placeholder-gray-300 resize-none"
                   required
                 />
+              </div>
+
+              {/* Additional Media Section - Moved to last */}
+              <div className="bg-white rounded-2xl shadow-xl p-8">
+                <h3 className="text-lg font-semibold mb-4">Additional Media</h3>
+                
+                {/* Photo Upload Section */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Add Photos (Max 10)
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    multiple
+                    onChange={handleMultiplePhotos}
+                    className="hidden"
+                    id="photo-upload"
+                    disabled={mediaFiles.photos.length >= 10}
+                  />
+                  <label
+                    htmlFor="photo-upload"
+                    className={`flex items-center justify-center p-4 border-2 border-dashed rounded-xl cursor-pointer
+                      ${mediaFiles.photos.length >= 10 
+                        ? 'border-gray-200 bg-gray-50 cursor-not-allowed' 
+                        : 'border-orange-300 hover:border-orange-400 hover:bg-orange-50'}`}
+                  >
+                    <div className="text-center">
+                      <svg className="mx-auto h-12 w-12 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                      <p className="mt-2 text-sm text-gray-600">Click to add photos</p>
+                      <p className="text-xs text-gray-500 mt-1">{10 - mediaFiles.photos.length} spots remaining</p>
+                    </div>
+                  </label>
+
+                  {/* Photo Preview Grid */}
+                  {mediaFiles.photos.length > 0 && (
+                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mt-4">
+                      {mediaFiles.photos.map((photo, index) => (
+                        <div key={index} className="relative group rounded-lg overflow-hidden">
+                          <img
+                            src={photo.url}
+                            alt={`Upload ${index + 1}`}
+                            className="w-full h-48 object-cover"
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button
+                              onClick={() => removeMedia('photos', index)}
+                              className="p-2 bg-red-500 rounded-full text-white hover:bg-red-600 transform hover:scale-110 transition-all"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Video Upload Section */}
+                <div className="mb-6">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Add Videos (Max 3)
+                  </label>
+                  <input
+                    type="file"
+                    accept="video/*"
+                    multiple
+                    onChange={handleVideoUpload}
+                    className="hidden"
+                    id="video-upload"
+                    disabled={mediaFiles.videos.length >= 3}
+                  />
+                  <label
+                    htmlFor="video-upload"
+                    className={`flex items-center justify-center p-4 border-2 border-dashed rounded-xl cursor-pointer
+                      ${mediaFiles.videos.length >= 3 
+                        ? 'border-gray-200 bg-gray-50 cursor-not-allowed' 
+                        : 'border-orange-300 hover:border-orange-400 hover:bg-orange-50'}`}
+                  >
+                    <div className="text-center">
+                      <svg className="mx-auto h-12 w-12 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                      </svg>
+                      <p className="mt-2 text-sm text-gray-600">Click to add videos</p>
+                      <p className="text-xs text-gray-500 mt-1">{3 - mediaFiles.videos.length} spots remaining</p>
+                    </div>
+                  </label>
+
+                  {/* Video Preview Grid */}
+                  {mediaFiles.videos.length > 0 && (
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+                      {mediaFiles.videos.map((video, index) => (
+                        <div key={index} className="relative group rounded-lg overflow-hidden">
+                          <video
+                            src={video.url}
+                            className="w-full h-48 object-cover"
+                            controls
+                          />
+                          <div className="absolute inset-0 bg-black bg-opacity-40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <button
+                              onClick={() => removeMedia('videos', index)}
+                              className="p-2 bg-red-500 rounded-full text-white hover:bg-red-600 transform hover:scale-110 transition-all"
+                            >
+                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
 
