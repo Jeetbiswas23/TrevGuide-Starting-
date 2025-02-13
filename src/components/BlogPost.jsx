@@ -84,6 +84,18 @@ function BlogPost() {
     setNote('');
   };
 
+  const handleDeleteNote = (noteId) => {
+    // Remove from blog-specific notes
+    const updatedNotes = notes.filter(note => note.id !== noteId);
+    setNotes(updatedNotes);
+    localStorage.setItem(`blog-notes-${id}`, JSON.stringify(updatedNotes));
+  
+    // Remove from saved notes
+    const savedNotes = JSON.parse(localStorage.getItem('savedNotes') || '[]');
+    const updatedSavedNotes = savedNotes.filter(note => note.id !== noteId);
+    localStorage.setItem('savedNotes', JSON.stringify(updatedSavedNotes));
+  };
+
   const getFontSizeClass = () => {
     switch (fontSize) {
       case 'sm': return 'text-sm';
@@ -301,7 +313,18 @@ function BlogPost() {
                 {notes.length > 0 && (
                   <div className="space-y-3">
                     {notes.map(note => (
-                      <div key={note.id} className="p-4 bg-orange-50 rounded-lg">
+                      <div key={note.id} className="p-4 bg-orange-50 rounded-lg relative group">
+                        <button
+                          onClick={() => handleDeleteNote(note.id)}
+                          className="absolute top-2 right-2 p-1 text-red-500 opacity-0 group-hover:opacity-100 
+                            hover:bg-red-50 rounded-full transition-all duration-200"
+                          title="Delete note"
+                        >
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" 
+                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                          </svg>
+                        </button>
                         <p className="text-gray-800">{note.text}</p>
                         <p className="text-sm text-gray-500 mt-2">
                           {new Date(note.date).toLocaleDateString()}
