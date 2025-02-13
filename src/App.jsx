@@ -261,7 +261,23 @@ function App() {
   }, []);
 
   const handleLogout = () => {
-    localStorage.clear();
+    // Save blogs before clearing localStorage
+    const userBlogs = localStorage.getItem('userBlogs');
+    
+    // Clear user-specific data but keep blogs
+    localStorage.removeItem('username');
+    localStorage.removeItem('joinDate');
+    localStorage.removeItem('bio');
+    localStorage.removeItem('location');
+    localStorage.removeItem('travelPreferences');
+    localStorage.removeItem('nextDestination');
+    localStorage.removeItem('profileImage');
+    
+    // Restore blogs
+    if (userBlogs) {
+      localStorage.setItem('userBlogs', userBlogs);
+    }
+    
     setUsername('');
     setShowDropdown(false);
     navigate('/');
