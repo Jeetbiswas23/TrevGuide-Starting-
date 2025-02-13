@@ -1,6 +1,44 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
+// Add this helper function at the top of your component
+const compressImage = async (imageUrl, maxSizeKB = 500) => {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      let width = img.width;
+      let height = img.height;
+      
+      // Calculate new dimensions while maintaining aspect ratio
+      const maxDimension = 800;
+      if (width > maxDimension || height > maxDimension) {
+        const ratio = Math.min(maxDimension / width, maxDimension / height);
+        width *= ratio;
+        height *= ratio;
+      }
+
+      canvas.width = width;
+      canvas.height = height;
+      
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, width, height);
+      
+      // Adjust quality until size is under maxSizeKB
+      let quality = 0.7;
+      let compressedUrl = canvas.toDataURL('image/jpeg', quality);
+      
+      while (compressedUrl.length > maxSizeKB * 1024 && quality > 0.1) {
+        quality -= 0.1;
+        compressedUrl = canvas.toDataURL('image/jpeg', quality);
+      }
+      
+      resolve(compressedUrl);
+    };
+    img.src = imageUrl;
+  });
+};
+
 function Dashboard({ username: propUsername, userProfile: initialProfile }) {
   const navigate = useNavigate();
   const [username, setUsername] = useState(propUsername || localStorage.getItem('username'));
@@ -106,17 +144,16 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
       if (!newBlog.destination.trim()) throw new Error('Destination is required');
       if (!newBlog.date) throw new Error('Date is required');
       if (!newBlog.content.trim()) throw new Error('Content is required');
-      if (!newBlog.category) throw new Error('Category is required');
 
       // Format the blog post
       const blogPost = {
         id: Date.now().toString(),
         title: newBlog.title.trim(),
         destination: newBlog.destination.trim(),
-        category: newBlog.category.toLowerCase(),
+        category: newBlog.category || 'adventure', // Set default category if none selected
         date: new Date(newBlog.date).toISOString(),
         content: newBlog.content.trim(),
-        images: newBlog.images, // Ensure images are properly copied
+        images: newBlog.imageUrl ? [newBlog.imageUrl] : [], // Use imageUrl if available
         tags: newBlog.tags || [],
         author: username || 'Anonymous',
         createdAt: new Date().toISOString(),
@@ -124,12 +161,22 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
         comments: []
       };
 
-      // Update state and localStorage
-      const updatedBlogs = [blogPost, ...blogs];
-      setBlogs(updatedBlogs);
-      localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
+      // Try to save to localStorage with error handling
+      try {
+        const updatedBlogs = [blogPost, ...(blogs || [])];
+        const blogsString = JSON.stringify(updatedBlogs);
+        
+        localStorage.setItem('userBlogs', blogsString);
+        setBlogs(updatedBlogs);
+      } catch (storageError) {
+        // If localStorage fails, try removing old blogs until it fits
+        const maxBlogs = 10; // Keep only recent blogs
+        const limitedBlogs = [blogPost, ...(blogs || []).slice(0, maxBlogs - 1)];
+        localStorage.setItem('userBlogs', JSON.stringify(limitedBlogs));
+        setBlogs(limitedBlogs);
+      }
 
-      // Reset form
+      // Reset the form state
       setNewBlog({
         title: '',
         destination: '',
@@ -138,9 +185,10 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
         images: [],
         imageUrl: '',
         tags: [],
-        category: ''
+        category: 'adventure'
       });
 
+      // Close the modal after successful submission
       setShowBlogForm(false);
       setPublishError('');
 
@@ -166,27 +214,24 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
   }, []);
 
   // Update the handleBlogImageUpload function
-  const handleBlogImageUpload = (e) => {
+  const handleBlogImageUpload = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      setPublishError('Image size should be less than 5MB');
-      return;
+    try {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const compressedImage = await compressImage(reader.result);
+        setNewBlog(prev => ({
+          ...prev,
+          imageUrl: compressedImage,
+          images: [compressedImage]
+        }));
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      setPublishError('Error processing image. Please try a different image.');
     }
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setNewBlog(prev => ({
-        ...prev,
-        imageUrl: reader.result,
-        images: [reader.result] // Store the image in both places
-      }));
-    };
-    reader.onerror = () => {
-      setPublishError('Error reading image file');
-    };
-    reader.readAsDataURL(file);
   };
 
   const deleteBlog = (blogId) => {
