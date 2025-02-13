@@ -551,16 +551,43 @@ function Dashboard({ username: propUsername, userProfile: initialProfile }) {
             )}
 
             {activeTab === 'saved' && (
-              <div className="text-center py-16">
-                <div className="text-6xl mb-4">🔖</div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">No Saved Places</h3>
-                <p className="text-gray-600 mb-6">Save your favorite destinations for later</p>
-                <Link 
-                  to="/explore" 
-                  className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full hover:bg-orange-600 transition-all"
-                >
-                  Discover Places
-                </Link>
+              <div className="p-8">
+                <h3 className="text-2xl font-bold text-gray-800 mb-8">Saved Notes</h3>
+                <div className="grid gap-6">
+                  {JSON.parse(localStorage.getItem('savedNotes') || '[]').map((note) => (
+                    <div key={note.id} className="bg-white rounded-xl shadow-md p-6 hover:shadow-lg transition-shadow">
+                      <div className="flex justify-between items-start mb-4">
+                        <div>
+                          <h4 className="font-semibold text-lg text-gray-900">{note.blogTitle}</h4>
+                          <p className="text-sm text-gray-500">{note.destination}</p>
+                        </div>
+                        <span className="text-sm text-gray-500">
+                          {new Date(note.date).toLocaleDateString()}
+                        </span>
+                      </div>
+                      <p className="text-gray-700">{note.text}</p>
+                      <button
+                        onClick={() => navigate(`/blog/${note.blogId}`)}
+                        className="mt-4 text-orange-600 hover:text-orange-700 text-sm font-medium"
+                      >
+                        View Blog →
+                      </button>
+                    </div>
+                  ))}
+                  {(!localStorage.getItem('savedNotes') || JSON.parse(localStorage.getItem('savedNotes')).length === 0) && (
+                    <div className="text-center py-16">
+                      <div className="text-6xl mb-4">📝</div>
+                      <h3 className="text-2xl font-bold text-gray-800 mb-2">No Saved Notes</h3>
+                      <p className="text-gray-600 mb-6">Start taking notes while reading blogs</p>
+                      <Link 
+                        to="/blogs" 
+                        className="inline-block bg-orange-500 text-white px-8 py-3 rounded-full hover:bg-orange-600 transition-all"
+                      >
+                        Browse Blogs
+                      </Link>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
 

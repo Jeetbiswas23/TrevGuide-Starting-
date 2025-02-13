@@ -65,12 +65,22 @@ function BlogPost() {
     const newNote = {
       id: Date.now(),
       text: note,
-      date: new Date().toISOString()
+      date: new Date().toISOString(),
+      blogId: blog.id,
+      blogTitle: blog.title,
+      destination: blog.destination
     };
     
+    // Save to blog-specific notes
     const updatedNotes = [...notes, newNote];
     setNotes(updatedNotes);
     localStorage.setItem(`blog-notes-${id}`, JSON.stringify(updatedNotes));
+
+    // Save to user's saved items
+    const savedNotes = JSON.parse(localStorage.getItem('savedNotes') || '[]');
+    const updatedSavedNotes = [...savedNotes, newNote];
+    localStorage.setItem('savedNotes', JSON.stringify(updatedSavedNotes));
+    
     setNote('');
   };
 
