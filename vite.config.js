@@ -2,12 +2,13 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  plugins: [
-    react({
-      babel: {
-        babelrc: false,
-        configFile: false,
-      }
-    })
-  ]
+  plugins: [react()],
+  server: {
+    port: 3000,
+    open: true
+  },
+  define: {
+    // Add this section
+    'process.env': {}
+  }
 })
