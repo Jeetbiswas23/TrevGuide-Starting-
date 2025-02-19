@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { authService } from '../services/api';
 import emailjs from '@emailjs/browser';
-import { apiService } from '../services/api';
 
 const Signup = ({ setUsername }) => {
   const navigate = useNavigate();
@@ -97,20 +97,26 @@ const Signup = ({ setUsername }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    if (!validateEmail(formData.email) || !validatePassword(formData.password)) {
+      return;
+    }
+  
     try {
-      const formData = new FormData(e.target);
-      const userData = {
-        username: formData.get('username'),
-        email: formData.get('email'),
-        password: formData.get('password'),
-      };
-
-      const response = await apiService.signup(userData);
-      setUsername(response.username);
-      navigate('/dashboard');
+      const response = await authService.signup(formData);
+      if (response.token) {
+        localStorage.setItem('token', response.token);
+        localStorage.setItem('username', formData.username);
+        setUsername(formData.username);
+        await sendWelcomeEmail(formData.email, formData.username);
+        setShowPopup(true);
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 2000);
+      }
     } catch (error) {
-      console.error('Signup failed:', error.response?.data || error.message);
-      // Show error message to user
+      console.error('Signup error:', error);
+      alert(error.response?.data?.message || 'Signup failed. Please try again.');
     }
   };
 

@@ -1,9 +1,22 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
+import axios from 'axios';
 
 export const apiConfig = {
-  baseURL: import.meta.env.VITE_API_URL || 'http://localhost:3000',
-  timeout: 5000,
-  headers: {
-    'Content-Type': 'application/json'
+  baseURL: 'http://localhost:3000',
+  endpoints: {
+    auth: '/auth',
+    signup: '/signup',
+    health: '/health'
+  }
+};
+
+// Remove duplicate api creation and export
+export const initializeApi = async () => {
+  try {
+    const response = await fetch(`${apiConfig.baseURL}${apiConfig.endpoints.health}`);
+    if (!response.ok) throw new Error('API health check failed');
+    return true;
+  } catch (error) {
+    console.error('API initialization failed:', error);
+    throw new Error('Unable to connect to server');
   }
 };
