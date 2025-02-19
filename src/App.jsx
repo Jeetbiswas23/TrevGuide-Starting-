@@ -26,6 +26,7 @@ import Croatia from './components/Country/Croatia';
 import Blog from './components/Blog';
 import BlogEditor from './components/BlogEditor';
 import BlogPost from './components/BlogPost';
+import { apiConfig } from './config/api';
 
 function ScrollToTop() {
   const location = useLocation();
@@ -261,6 +262,12 @@ function App() {
     setShowDropdown(false);
     navigate('/');
   };
+
+  // Add API configuration to the app context
+  useEffect(() => {
+    // You can use apiConfig.baseURL to make API calls
+    console.log('API URL configured:', apiConfig.baseURL);
+  }, []);
 
   return (
     <div className="bg-gray-50 text-orange-900 min-h-screen flex flex-col">
