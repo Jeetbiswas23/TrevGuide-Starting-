@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { apiService } from '../services/api';
 
 // Add these helper functions at the top
 const compressImage = async (imageUrl, maxSizeKB = 500) => {
@@ -183,47 +184,8 @@ function BlogEditor() {
         videos: mediaFiles.videos.slice(0, 2).map(video => video.url) // Limit to 2 videos
       };
 
-      // Get existing blogs
-      const existingBlogs = JSON.parse(localStorage.getItem('userBlogs') || '[]');
-      let updatedBlogs;
-
-      if (id) {
-        // Update existing blog
-        updatedBlogs = existingBlogs.map(b => 
-          b.id === id ? blogPost : b
-        );
-      } else {
-        // Add new blog
-        updatedBlogs = [blogPost, ...existingBlogs];
-      }
-      
-      try {
-        // Try to save all blogs
-        localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
-      } catch (storageError) {
-        // If storage fails, try these steps:
-        // 1. Remove oldest blogs until it fits
-        while (updatedBlogs.length > 1) {
-          updatedBlogs.pop(); // Remove oldest blog
-          try {
-            localStorage.setItem('userBlogs', JSON.stringify(updatedBlogs));
-            break;
-          } catch (e) {
-            continue;
-          }
-        }
-
-        // 2. If still fails, try saving just the new blog
-        if (updatedBlogs.length === 1) {
-          try {
-            localStorage.setItem('userBlogs', JSON.stringify([blogPost]));
-          } catch (finalError) {
-            throw new Error('Storage full. Try reducing image sizes or removing some content.');
-          }
-        }
-      }
-
-      navigate('/dashboard');
+      await apiService.createBlog(blogPost);
+      navigate('/blogs');
     } catch (error) {
       setPublishError(error.message);
       console.error('Blog publishing error:', error);

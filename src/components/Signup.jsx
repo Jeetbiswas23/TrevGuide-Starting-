@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import emailjs from '@emailjs/browser';
+import { apiService } from '../services/api';
 
-function Signup({ setUsername }) {
+const Signup = ({ setUsername }) => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: '',
@@ -96,36 +97,20 @@ function Signup({ setUsername }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     try {
-      const isEmailValid = validateEmail(formData.email);
-      const isPasswordValid = validatePassword(formData.password);
-      
-      if (formData.username && isEmailValid && isPasswordValid && formData.location) {
-        // Show loading state
-        setShowPopup(true);
-        
-        // Save to localStorage
-        Object.entries(formData).forEach(([key, value]) => {
-          localStorage.setItem(key, value);
-        });
-        localStorage.setItem('joinDate', new Date().toLocaleDateString());
-        localStorage.setItem('isAuthenticated', 'true');
-        
-        // Send welcome email
-        await sendWelcomeEmail(formData.email, formData.username);
-        
-        // Update username and navigate
-        setUsername(formData.username);
-        
-        setTimeout(() => {
-          setShowPopup(false);
-          navigate('/dashboard');
-        }, 2000);
-      }
+      const formData = new FormData(e.target);
+      const userData = {
+        username: formData.get('username'),
+        email: formData.get('email'),
+        password: formData.get('password'),
+      };
+
+      const response = await apiService.signup(userData);
+      setUsername(response.username);
+      navigate('/dashboard');
     } catch (error) {
-      console.error('Signup error:', error);
-      // Handle error appropriately
+      console.error('Signup failed:', error.response?.data || error.message);
+      // Show error message to user
     }
   };
 
