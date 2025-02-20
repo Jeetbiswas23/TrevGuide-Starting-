@@ -5,6 +5,7 @@
   "type": "module",
   "scripts": {
     "postinstall": "npm install -g vite",
+    "clean": "rm -rf node_modules package-lock.json",
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
@@ -22,7 +23,9 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.x",
     "react-virtualized-auto-sizer": "^1.0.25",
-    "react-window": "^1.8.11"
+    "react-window": "^1.8.11",
+    "@vitejs/plugin-react": "^4.2.0",
+    "react-refresh": "^0.14.0"
   },
   "devDependencies": {
     "@babel/core": "^7.24.0",
